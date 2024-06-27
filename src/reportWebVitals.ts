@@ -1,3 +1,4 @@
+// React 프로젝트의 성능을 측정하기 위한 파일.
 import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {
