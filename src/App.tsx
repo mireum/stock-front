@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 
@@ -7,7 +6,7 @@ import './App.css';
 const App:React.FC = () => {
   return (
     <div className="App">
-      
+      모의주식 웹입니다.
     </div>
   );
 }
