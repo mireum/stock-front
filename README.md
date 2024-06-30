@@ -3,4 +3,6 @@
 
 npm install axios cors react-bootstrap react-redux react-router-dom styled-components styled-reset
 
-## npm start
+## 한국투자증권 '주식현재가 일자별' api
+
+npm start
