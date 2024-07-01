@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface TokenResponse {
@@ -12,7 +12,7 @@ interface StockResponse {
   rt_cd: string;  // 성공 실패 여부
   msg_cd: string; // 응답 코드
   msg1: string;   // 응답 메세지
-  output: [];     // 응답 상세
+  output: string[];     // 응답 상세
   stck_bsop_date: string;  // 주식 영업 일자
   stck_oprc: string;  // 주식 시가
   stck_hgpr: string;  // 주식 최고가
@@ -32,36 +32,53 @@ interface StockResponse {
 
 function Main() {
   const [token, setToken] = useState<string>("");
-  const [stock, setStock] = useState<string>("");
+  // const [stock, setStock] = useState<any>("");
 
+  useEffect(() => {
+    // proxy에 주소를 설정했기 때문에 
+    // axios.post<TokenResponse>("https://openapivts.koreainvestment.com:29443/oauth2/tokenP",{
+    console.log(`aa`,process.env.REACT_APP_APP_KEY);
 
-  // proxy에 주소를 설정했기 때문에 
-  // axios.post<TokenResponse>("https://openapivts.koreainvestment.com:29443/oauth2/tokenP",{
-  axios.post<TokenResponse>("/oauth2/tokenP",{
-    "grant_type": "client_credentials",
-    "appkey":process.env.REACT_APP_APP_KEY,
-    "appsecret":process.env.REACT_APP_APP_SECRET_KEY
-  })
-  .then((response)=>{
-    setToken(response.data.access_token)
-  })
-  .catch((error)=>{
-    console.log(error);      
-  })
+    axios.post<TokenResponse>("/oauth2/tokenP",{
+      "grant_type": "client_credentials",
+      "appkey":process.env.REACT_APP_APP_KEY,
+      "appsecret":process.env.REACT_APP_APP_SECRET_KEY
+    })
+    .then((response)=>{
+      setToken(response.data.access_token);
+      console.log(response.data.access_token);
+      
+    })
+    .catch((error)=>{
+      console.log(error);      
+    })
 
+  }, []);
+  console.log(process.env.REACT_APP_APP_KEY);
+  
   // 주식현재가 일자별 api 요청
-  axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
-    "authorization": `Bearer + ${token}`,
-    "appkey":process.env.REACT_APP_APP_KEY,
-    "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
-    "tr_id": "FHKST01010400"
-  })
-  .then((response)=>{
-    setStock(response.data.access_token)
-  })
-  .catch((error)=>{
-    console.log(error);      
-  })
+  // axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
+  //   headers: {
+  //     "authorization": `Bearer + ${token}`,
+  //     "appkey":process.env.REACT_APP_APP_KEY,
+  //     "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
+  //     "tr_id": "FHKST01010400"
+  //   },
+  //   params: {
+  //     "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
+  //     "FID_INPUT_ISCD": "00700",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
+  //     "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
+  //     "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
+  //   }
+  // })
+  // .then((response)=>{
+  //   setStock(response.data.output)
+  //   console.log(response.data);
+    
+  // })
+  // .catch((error)=>{
+  //   console.log(error);      
+  // })
 
   return (
     <div>
