@@ -8,3 +8,5 @@ npm install axios cors react-bootstrap react-redux react-router-dom styled-compo
 npm start
 
 다음에 할 것: 주식 종목 번호 알아서 차례대로 호출하기
+
+- 삼성전자 005930

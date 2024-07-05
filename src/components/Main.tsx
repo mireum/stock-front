@@ -65,7 +65,7 @@ function Main() {
       },
       params: {
         "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
-        "FID_INPUT_ISCD": "00700",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
+        "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
         "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
         "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
       }
