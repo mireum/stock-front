@@ -71,7 +71,7 @@ function Main() {
       }
     })
     .then((response)=>{
-      setStock(response.data.output)
+      setStock(JSON.stringify(response.data.output))
       console.log(response.data);
       
     })
@@ -81,11 +81,13 @@ function Main() {
   }, [token]);
 
   return (
-    <div>
-      <p>Token: {token}</p>
-      {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
-      <p>Stock Data: {stock}</p>
-    </div>
+    <>
+      <div>
+        <p>Token: {token}</p>
+        {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
+        <p>Stock Data: {stock}</p>
+      </div>
+    </>
   );
 }
 
