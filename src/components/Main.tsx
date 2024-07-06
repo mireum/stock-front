@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Bar from './Bar';
 
 interface TokenResponse {
   access_token: string; // 접근토큰
@@ -8,7 +9,7 @@ interface TokenResponse {
   acess_token_token_expired: string;  // 접근토큰 유효기간(ex) "2022-08-30 08:10:10")
 }
 
-interface StockResponse {
+export type StockResponse = {
   rt_cd: string;  // 성공 실패 여부
   msg_cd: string; // 응답 코드
   msg1: string;   // 응답 메세지
@@ -30,7 +31,7 @@ interface StockResponse {
 
 }
 
-function Main() {
+function Main(): React.ReactElement {
   const [token, setToken] = useState<string>("");
   const [stock, setStock] = useState<any>("");
 
@@ -86,6 +87,7 @@ function Main() {
         <p>Token: {token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
         <p>Stock Data: {stock}</p>
+        <Bar stock={stock} />
       </div>
     </>
   );
