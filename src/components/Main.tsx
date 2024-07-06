@@ -6,7 +6,7 @@ interface TokenResponse {
   access_token: string; // 접근토큰
   token_type: string; // 접근토큰 유형(Bearer)
   expires_in: number; // 접근토큰 유효기간(초)
-  acess_token_token_expired: string;  // 접근토큰 유효기간(ex) "2022-08-30 08:10:10")
+  access_token_token_expired: string;  // 접근토큰 유효기간(ex) "2022-08-30 08:10:10")
 }
 
 export type StockResponse = {
@@ -45,7 +45,9 @@ function Main(): React.ReactElement {
       "appsecret":process.env.REACT_APP_APP_SECRET_KEY
     })
     .then((response)=>{
-      setToken(response.data);      
+      setToken(response.data);
+      console.log('토큰!!::', token);
+      
     })
     .catch((error)=>{
       console.log(error);      
@@ -58,7 +60,7 @@ function Main(): React.ReactElement {
     // if (token) {
       axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
         headers: {
-          "authorization": `Bearer ${token}`,
+          "authorization": `Bearer ${token?.access_token}`,
           "appkey":process.env.REACT_APP_APP_KEY,
           "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
           "tr_id": "FHKST01010400"
@@ -86,8 +88,8 @@ function Main(): React.ReactElement {
       <div>
         <p>Token: {token?.access_token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
-        <p>Stock Data: {JSON.stringify(stock)}</p>
-        <ChartBar stock={stock} />
+        <p>Stock Data: {stock?.output}</p>
+        {/* <ChartBar stock={stock} /> */}
       </div>
     </>
   );
