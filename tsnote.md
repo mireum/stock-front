@@ -112,3 +112,20 @@ export type ApiResponse<T> = {
 
 나중에 
 type RestaurantResponse = ApiResponse<Restaurant> 이렇게 dynamic하게 쓸 수 있다.
+
+## 제네릭
+function toArray<T>(a: T, b: T): T[] {
+   return [a, b];
+}
+
+const toArray2 = <T>(a: T, b: T): T[] => { ... }
+
+주의) 제네릭에서 인수를 '배열'로 받을 경우 따로 제네릭 처리를 T[]나 Array<T>로 해주어야 함
+
+인터페이스와 많이 쓰임
+interface Mobile<T> {
+  ~~:T;
+}
+
+제네릭의 extends는 인터페이스나 클래스의 extends 와 약간 정의가 다르다.클래스의 extends는 상속의 의미로서 '확장' 의 정의를 가지지만, 제네릭의 extends는 '제한' 의 의미를 가진다는 차이점이 있다.따라서 <T extends K> 형태의 제네릭이 있다면, T가 K에 할당 가능해야 한다 라고 정의하면 된다.
+

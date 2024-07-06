@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Bar from './Bar';
+import ChartBar from './ChartBar';
 
 interface TokenResponse {
   access_token: string; // 접근토큰
@@ -32,8 +32,8 @@ export type StockResponse = {
 }
 
 function Main(): React.ReactElement {
-  const [token, setToken] = useState<string>("");
-  const [stock, setStock] = useState<any>("");
+  const [token, setToken] = useState<TokenResponse | null>(null);
+  const [stock, setStock] = useState<StockResponse | null>(null);
 
   useEffect(() => {
     // 토큰은 1분당 1회 발급됨
@@ -45,7 +45,7 @@ function Main(): React.ReactElement {
       "appsecret":process.env.REACT_APP_APP_SECRET_KEY
     })
     .then((response)=>{
-      setToken(response.data.access_token);      
+      setToken(response.data);      
     })
     .catch((error)=>{
       console.log(error);      
@@ -55,39 +55,39 @@ function Main(): React.ReactElement {
   
   // 주식현재가 일자별 api 요청
   useEffect(() => {
-    console.log(`token: ${token}`);
-    
-    axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
-      headers: {
-        "authorization": `Bearer ${token}`,
-        "appkey":process.env.REACT_APP_APP_KEY,
-        "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
-        "tr_id": "FHKST01010400"
-      },
-      params: {
-        "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
-        "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
-        "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
-        "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
-      }
-    })
-    .then((response)=>{
-      setStock(JSON.stringify(response.data.output))
-      console.log(response.data);
-      
-    })
-    .catch((error)=>{
-      console.log(error);      
-    })
+    // if (token) {
+      axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
+        headers: {
+          "authorization": `Bearer ${token}`,
+          "appkey":process.env.REACT_APP_APP_KEY,
+          "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
+          "tr_id": "FHKST01010400"
+        },
+        params: {
+          "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
+          "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
+          "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
+          "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
+        }
+      })
+      .then((response)=>{
+        setStock(response.data)
+        console.log(`스톡`,response.data);
+        
+      })
+      .catch((error)=>{
+        console.log(error);      
+      })
+    // }
   }, [token]);
 
   return (
     <>
       <div>
-        <p>Token: {token}</p>
+        <p>Token: {token?.access_token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
-        <p>Stock Data: {stock}</p>
-        <Bar stock={stock} />
+        <p>Stock Data: {JSON.stringify(stock)}</p>
+        <ChartBar stock={stock} />
       </div>
     </>
   );
