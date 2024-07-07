@@ -46,7 +46,7 @@ function Main(): React.ReactElement {
     })
     .then((response)=>{
       setToken(response.data);
-      console.log('토큰!!::', token);
+      console.log('토큰!!::', response.data.access_token);
       
     })
     .catch((error)=>{
@@ -88,7 +88,7 @@ function Main(): React.ReactElement {
       <div>
         <p>Token: {token?.access_token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock)}</p> */}
-        <p>Stock Data: {stock?.output}</p>
+        <p>Stock Data: {JSON.stringify(stock?.output)}</p>
         {/* <ChartBar stock={stock} /> */}
       </div>
     </>
