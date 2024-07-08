@@ -53,8 +53,6 @@ function ChartBar({ stock }: StockData): React.ReactElement {
 
       </Bar>
     </BarChart>
-    // <>
-    // </>
   );
 }
 
