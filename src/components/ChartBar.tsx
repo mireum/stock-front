@@ -16,7 +16,7 @@ function ChartBar({ stock }: StockData): React.ReactElement {
   console.log(`props-stock`,stock);
   
   // 필요한 데이터 변환
-  const data = stock.output.map((item:OutputArr, index:number) => ({
+  const data = stock.output.reverse().map((item:OutputArr, index:number) => ({
 
     stck_hgpr: item.stck_hgpr,
     stck_lwpr: item.stck_lwpr,
@@ -29,33 +29,45 @@ function ChartBar({ stock }: StockData): React.ReactElement {
   }));
   console.log(`data::`, data);
   
+  // 날짜를 문자열로 받아서 MM.DD 형식으로 변환
   const formatDate = (date:string) => {
-    // 날짜를 문자열로 받아서 MM.DD 형식으로 변환
     const year = date.substring(0, 4);
     const month = date.substring(4, 6);
     const day = date.substring(6, 8);
     return `${month}.${day}`;
   };
 
+  const formatDateVerbose = (date:string) => {
+    const year = date.substring(0, 4);
+    const month = date.substring(4, 6);
+    const day = date.substring(6, 8);
+    return `${year}년 ${month}월 ${day}일`;
+  };
+  // const tooltipFormatter = (value:any, name:any, props:any) => {
+  //   const date = props.payload.stck_bsop_date;
+  //   return [value, formatDateVerbose(date)];
+  // };
+
   return (
     <BarChart width={1000} height={500} data={data} >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
       <YAxis />
-      <Tooltip  />
+      <Tooltip />
       <Bar dataKey={
         (data) => {
           const range = [data.stck_lwpr, data.stck_hgpr]
           return range
         }
       }
+      name={`가격(KRW)`}
       fill = "#E94560" >
         {data.map((item, index) => (
           <Cell key={index} fill={(Number(item.prdy_vrss_sign) > 3) ? "#006DEE" : "#E94560"} />
         ))}
       </Bar>
       {/* 누적 거래량 */}
-      <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량'} />
+      <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량(백)'} />
     </BarChart>
   );
 }
