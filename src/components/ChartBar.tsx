@@ -22,10 +22,10 @@ function ChartBar({ stock }: StockData): React.ReactElement {
     stck_lwpr: item.stck_lwpr,
     stck_bsop_date: item.stck_bsop_date,
     prdy_vrss_sign: item.prdy_vrss_sign,
+    acml_vol: item.acml_vol,
     
     // stck_oprc: item.stck_oprc,
     // stck_clpr: item.stck_clpr,
-    // acml_vol: item.acml_vol,
   }));
   console.log(`data::`, data);
   
@@ -42,10 +42,10 @@ function ChartBar({ stock }: StockData): React.ReactElement {
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
       <YAxis />
-      <Tooltip />
+      <Tooltip  />
       <Bar dataKey={
         (data) => {
-          const range = [data.stck_hgpr, data.stck_lwpr]
+          const range = [data.stck_lwpr, data.stck_hgpr]
           return range
         }
       }
@@ -54,6 +54,8 @@ function ChartBar({ stock }: StockData): React.ReactElement {
           <Cell key={index} fill={(Number(item.prdy_vrss_sign) > 3) ? "#006DEE" : "#E94560"} />
         ))}
       </Bar>
+      {/* 누적 거래량 */}
+      <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량'} />
     </BarChart>
   );
 }
