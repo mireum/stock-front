@@ -32,12 +32,16 @@ export type StockResponse = {
   msg_cd: string; // 응답 코드
   msg1: string;   // 응답 메세지
   output: OutputArr[];     // 응답 상세
-  
+}
+
+type StockArr = {
+  StockArray: StockResponse[];
 }
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
-  const [stock, setStock] = useState<StockResponse | null>(null);
+  // const [stock, setStock] = useState<StockResponse | null>(null);
+  const [stock, setStock] = useState<StockArr | null>(null);
 
   useEffect(() => {
     // 토큰은 1분당 1회 발급됨
@@ -90,8 +94,10 @@ function Main(): React.ReactElement {
       <div>
         <p>Token: {token?.access_token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock?.output)}</p> */}
-        
+
         <ChartBar stock={stock} />
+
+
       </div>
     </>
   );
