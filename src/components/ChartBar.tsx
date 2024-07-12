@@ -8,7 +8,6 @@ type StockData = {
 
 function ChartBar({ stock }: StockData): React.ReactElement {
 
-  // if (!stock || !stock.output || stock.output.length === 0) {
   if (!stock) {
     return <p>No data available</p>;
   }
@@ -37,16 +36,6 @@ function ChartBar({ stock }: StockData): React.ReactElement {
     return `${month}.${day}`;
   };
 
-  const formatDateVerbose = (date:string) => {
-    const year = date.substring(0, 4);
-    const month = date.substring(4, 6);
-    const day = date.substring(6, 8);
-    return `${year}년 ${month}월 ${day}일`;
-  };
-  // const tooltipFormatter = (value:any, name:any, props:any) => {
-  //   const date = props.payload.stck_bsop_date;
-  //   return [value, formatDateVerbose(date)];
-  // };
 
   return (
     <BarChart width={1000} height={500} data={data} >
