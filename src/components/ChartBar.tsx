@@ -22,7 +22,6 @@ function ChartBar({ stock }: StockData): React.ReactElement {
     stck_bsop_date: item.stck_bsop_date,
     prdy_vrss_sign: item.prdy_vrss_sign,
     acml_vol: item.acml_vol,
-    
     // stck_oprc: item.stck_oprc,
     // stck_clpr: item.stck_clpr,
   }));
@@ -30,7 +29,7 @@ function ChartBar({ stock }: StockData): React.ReactElement {
   
   // 날짜를 문자열로 받아서 MM.DD 형식으로 변환
   const formatDate = (date:string) => {
-    const year = date.substring(0, 4);
+    // const year = date.substring(0, 4);
     const month = date.substring(4, 6);
     const day = date.substring(6, 8);
     return `${month}.${day}`;

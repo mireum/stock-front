@@ -50,8 +50,7 @@ function Main(): React.ReactElement {
     })
     .then((response)=>{
       setToken(response.data);
-      console.log('토큰!!::', response.data.access_token);
-      
+      // console.log('토큰!!::', response.data.access_token);
     })
     .catch((error)=>{
       console.log(error);      
@@ -79,7 +78,6 @@ function Main(): React.ReactElement {
       .then((response)=>{
         setStock(response.data)
         console.log(`스톡`,response.data);
-        
       })
       .catch((error)=>{
         console.log(error);      
@@ -91,8 +89,8 @@ function Main(): React.ReactElement {
     <>
       <div>
         <p>Token: {token?.access_token}</p>
-
         {/* <p>Stock Data: {JSON.stringify(stock?.output)}</p> */}
+        
         <ChartBar stock={stock} />
       </div>
     </>
