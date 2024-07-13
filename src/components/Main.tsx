@@ -34,16 +34,10 @@ export type StockResponse = {
   output: OutputArr[];     // 응답 상세
 }
 
-// export type StockArr = {
-//   StockArray: StockResponse[];
-// }
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
   const [stock, setStock] = useState<StockResponse[]>([]);
-  // const [stock, setStock] = useState<StockResponse | null>(null);
-  // const [stock, setStock] = useState<StockArr | null>(null);
-  // const [stock, setStock] = useState<OutputArr[]>([]);
 
   useEffect(() => {
     // 토큰은 1분당 1회 발급됨
@@ -67,8 +61,7 @@ function Main(): React.ReactElement {
   // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 삼성전자 005930 엘지전자 066570 네이버 035420 	
-  // SK하이닉스 000660 카카오 035720 
+  // 삼성전자 005930 엘지전자 066570 네이버 035420 SK하이닉스 000660 카카오 035720
 
   // 주식현재가 일자별 api 요청
   useEffect(() => {
@@ -111,11 +104,12 @@ function Main(): React.ReactElement {
     <>
       <div>
         <p>Token: {token?.access_token}</p>
-        {/* <p>Stock Data: {JSON.stringify(stock?.output)}</p> */}
-        <p>Stock: {JSON.stringify(stock)}</p>
-
+        {/* <p>Stock: {JSON.stringify(stock)}</p> */}
         {/* <ChartBar stock={stock} /> */}
-
+        {stock.map((data:StockResponse, index:number) => (
+            <ChartBar stock={data}/>
+          )
+        )}
 
       </div>
     </>
