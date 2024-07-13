@@ -5,6 +5,9 @@ import { StockResponse, OutputArr } from './Main';
 type StockData = {
   stock: StockResponse | null;
 }
+// type StockData = {
+//   stock: OutputArr | null;
+// }
 
 function ChartBar({ stock }: StockData): React.ReactElement {
 

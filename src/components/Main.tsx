@@ -34,14 +34,16 @@ export type StockResponse = {
   output: OutputArr[];     // 응답 상세
 }
 
-type StockArr = {
-  StockArray: StockResponse[];
-}
+// export type StockArr = {
+//   StockArray: StockResponse[];
+// }
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
+  const [stock, setStock] = useState<StockResponse[]>([]);
   // const [stock, setStock] = useState<StockResponse | null>(null);
-  const [stock, setStock] = useState<StockArr | null>(null);
+  // const [stock, setStock] = useState<StockArr | null>(null);
+  // const [stock, setStock] = useState<OutputArr[]>([]);
 
   useEffect(() => {
     // 토큰은 1분당 1회 발급됨
@@ -62,31 +64,68 @@ function Main(): React.ReactElement {
 
   }, []);
   
+  const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+
   // 주식현재가 일자별 api 요청
   useEffect(() => {
     // if (token) {
-      axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
-        headers: {
-          "authorization": `Bearer ${token?.access_token}`,
-          "appkey":process.env.REACT_APP_APP_KEY,
-          "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
-          "tr_id": "FHKST01010400"
-        },
-        params: {
-          "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
-          "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
-          "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
-          "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
-        }
-      })
-      .then((response)=>{
-        setStock(response.data)
-        console.log(`스톡`,response.data);
-      })
-      .catch((error)=>{
-        console.log(error);      
-      })
+      // axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
+      //   headers: {
+      //     "authorization": `Bearer ${token?.access_token}`,
+      //     "appkey":process.env.REACT_APP_APP_KEY,
+      //     "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
+      //     "tr_id": "FHKST01010400"
+      //   },
+      //   params: {
+      //     "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
+      //     "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
+      //     "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
+      //     "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
+      //   }
+      // })
+      // .then((response)=>{
+      //   setStock(response.data)
+      //   console.log(`스톡`,response.data);
+      // })
+      // .catch((error)=>{
+      //   console.log(error);      
+      // })
     // }
+    const fetchStockData = async () => {
+      const stockCodes = ["005930", "000660", "035720"]; // 여러 주식 종목 코드
+      if (token) {
+        try {
+          const allStockData = [];
+          for (let code of stockCodes) {
+            const response = await axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price", {
+              headers: {
+                "authorization": `Bearer ${token.access_token}`,
+                "appkey": process.env.REACT_APP_APP_KEY,
+                "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
+                "tr_id": "FHKST01010400"
+              },
+              params: {
+                "FID_COND_MRKT_DIV_CODE": "J",
+                "FID_INPUT_ISCD": code,
+                "FID_PERIOD_DIV_CODE": "D",
+                "FID_ORG_ADJ_PRC": "1"
+              }
+            });
+            allStockData.push(response.data);
+            await sleep(500); // 각 요청 사이에 100ms 지연
+          }
+          console.log('올스톡데이터', allStockData);
+          
+          setStock(allStockData);
+          console.log('배열스톡', stock);
+          
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchStockData();
   }, [token]);
 
   return (
@@ -94,8 +133,9 @@ function Main(): React.ReactElement {
       <div>
         <p>Token: {token?.access_token}</p>
         {/* <p>Stock Data: {JSON.stringify(stock?.output)}</p> */}
+        <p>Stock: {JSON.stringify(stock)}</p>
 
-        <ChartBar stock={stock} />
+        {/* <ChartBar stock={stock} /> */}
 
 
       </div>
