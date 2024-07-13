@@ -64,35 +64,16 @@ function Main(): React.ReactElement {
 
   }, []);
   
+  // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  // 삼성전자 005930 엘지전자 066570 네이버 035420 	
+  // SK하이닉스 000660 카카오 035720 
 
   // 주식현재가 일자별 api 요청
   useEffect(() => {
-    // if (token) {
-      // axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price",{
-      //   headers: {
-      //     "authorization": `Bearer ${token?.access_token}`,
-      //     "appkey":process.env.REACT_APP_APP_KEY,
-      //     "appsecret":process.env.REACT_APP_APP_SECRET_KEY,
-      //     "tr_id": "FHKST01010400"
-      //   },
-      //   params: {
-      //     "FID_COND_MRKT_DIV_CODE": "J",  // FID 조건 시장 분류 코드(J : 주식, ETF, ETN)
-      //     "FID_INPUT_ISCD": "005930",     // FID 입력 종목코드 종목번호 (6자리) ETN의 경우, Q로 시작 (EX. Q500001)
-      //     "FID_PERIOD_DIV_CODE": "D", // FID 기간 분류 코드
-      //     "FID_ORG_ADJ_PRC": "1" // FID 수정주가 원주가 가격
-      //   }
-      // })
-      // .then((response)=>{
-      //   setStock(response.data)
-      //   console.log(`스톡`,response.data);
-      // })
-      // .catch((error)=>{
-      //   console.log(error);      
-      // })
-    // }
     const fetchStockData = async () => {
-      const stockCodes = ["005930", "000660", "035720"]; // 여러 주식 종목 코드
+      const stockCodes = ["005930", "066570", "035420", "000660", "035720"];
       if (token) {
         try {
           const allStockData = [];
@@ -112,12 +93,10 @@ function Main(): React.ReactElement {
               }
             });
             allStockData.push(response.data);
-            await sleep(500); // 각 요청 사이에 100ms 지연
+            await sleep(500); // 각 요청 사이에 500ms 지연
           }
           console.log('올스톡데이터', allStockData);
-          
           setStock(allStockData);
-          console.log('배열스톡', stock);
           
         } catch (error) {
           console.log(error);
