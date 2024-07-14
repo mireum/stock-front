@@ -1,13 +1,13 @@
-import React from 'react';
-import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell, Legend } from 'recharts';
+import React, { useState } from 'react';
+import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell } from 'recharts';
 import { StockResponse, OutputArr } from './Main';
 
-type StockData = {
+type PropsStockData = {
   stock: StockResponse | null;
   companyName: string;
 }
 
-function ChartBar({ stock, companyName }: StockData): React.ReactElement {
+function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
 
   if (!stock) {
     return <p>No data available</p>;
@@ -41,15 +41,28 @@ function ChartBar({ stock, companyName }: StockData): React.ReactElement {
 
   return (
     <>
-      <BarChart width={1200} height={600} data={data} syncId="synced">
+      <BarChart width={1200} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
-        <YAxis yAxisId='0' label={{ value: 'KRW', offset: '30', angle:0, position: 'top' }} 
+        <YAxis yAxisId='0' label={{ value: 'KRW', offset: '10', angle:0, position: 'top' }} 
           tickFormatter={formatYAxis}
           domain={['dataMin-20000', 'dataMax + 20000']}
         />
         <Tooltip />
-        <Legend layout='vertical' align='right' verticalAlign='middle' payload={[{value: companyName}]} />
+        {/* Legend 추가하면 차트 크기가 작아짐 */}
+        {/* <Legend layout='vertical' align='right' verticalAlign='top' 
+          wrapperStyle={{
+            position: 'absolute',
+            top: 10,
+            right: 130,
+            padding: '10px',
+            backgroundColor: '#f5f5f5',
+            border: '1px solid #d5d5d5',
+            borderRadius: '5px',
+            boxShadow: '0 0 10px rgba(0,0,0,0.1)'
+          }}
+          payload={[{value: companyName, type:'square', id: 'ID00', color: '#8884d8' }]} 
+        /> */}
         <Bar dataKey={
           (data) => {
             const range = [data.stck_lwpr, data.stck_hgpr]
@@ -63,9 +76,10 @@ function ChartBar({ stock, companyName }: StockData): React.ReactElement {
           ))}
         </Bar>
       </BarChart>
-      <BarChart width={1200} height={500} data={data} syncId="synced">
+
+      <BarChart width={1200} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
-        <YAxis yAxisId='1' label={{ value: "누적 거래량(백)", offset: "30", angle:0, position: "top" }} tickFormatter={formatYAxis} />
+        <YAxis yAxisId='1' label={{ value: "누적 거래량(백)", offset: "10", angle:0, position: "top" }} tickFormatter={formatYAxis} />
         <Tooltip />
         {/* 누적 거래량 */}
         <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량(백)'} yAxisId='1' fill='#67ac40'/>

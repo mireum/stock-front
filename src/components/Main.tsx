@@ -34,10 +34,25 @@ export type StockResponse = {
   output: OutputArr[];     // 응답 상세
 }
 
+interface CompanyTab {
+  companyName: string;
+  stockData: StockResponse | null;
+}
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
   const [stock, setStock] = useState<StockResponse[]>([]);
+
+  // const [tabs, setTabs] = useState<CompanyTab[]>([
+  //   { companyName: '삼성전자', stockData: null },
+  //   { companyName: '엘지전자', stockData: null },
+  //   { companyName: '네이버', stockData: null },
+  //   { companyName: 'SK하이닉스', stockData: null },
+  //   { companyName: '카카오', stockData: null },  
+  // ]);
+
+  // 현재 활성화된 탭을 관리하는 상태
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   useEffect(() => {
     // 토큰은 1분당 1회 발급됨
@@ -60,9 +75,6 @@ function Main(): React.ReactElement {
   
   // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  // 삼성전자 005930 엘지전자 066570 네이버 035420 SK하이닉스 000660 카카오 035720
-  const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
 
   // 주식현재가 일자별 api 요청
   useEffect(() => {
@@ -101,18 +113,70 @@ function Main(): React.ReactElement {
     fetchStockData();
   }, [token]);
 
+  // 삼성전자 005930 엘지전자 066570 네이버 035420 SK하이닉스 000660 카카오 035720
+  const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
+
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+  };
+
   return (
     <>
-      <div>
+      {/* <div> */}
         {/* <p>Token: {token?.access_token}</p> */}
         {/* <p>Stock: {JSON.stringify(stock)}</p> */}
         {/* <ChartBar stock={stock} /> */}
-        {stock.map((data:StockResponse, index:number) => (
+        {/* {stock.map((data:StockResponse, index:number) => (
             <ChartBar stock={data} companyName={companyName[index]} />
           )
-        )}
+        )} */}
 
+      {/* </div> */}
+      {/* <div>
+        <ul>
+          <li onClick={()=>handleTabClick(0)}>삼성전자</li>
+          <li onClick={()=>handleTabClick(1)}>엘지전자</li>
+          <li onClick={()=>handleTabClick(2)}>네이버</li>
+          <li onClick={()=>handleTabClick(3)}>SK하이닉스</li>
+          <li onClick={()=>handleTabClick(4)}>카카오</li>
+        </ul>
+      </div> */}
+
+      <div>
+        <div>
+          <ul>
+            {companyName.map((name, index) => (
+              <li key={index} onClick={() => handleTabClick(index)} style={{ cursor: 'pointer', fontWeight: activeTab === index ? 'bold' : 'normal' }}>
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          {stock.length > 0 && activeTab !== null && (
+            <ChartBar stock={stock[activeTab]} companyName={companyName[activeTab]} />
+          )}
+        </div>
       </div>
+      {/* <div>
+        <div className='tabs'>
+          {tabs.map((tab, index) => (
+            <div
+              key={index}
+              className={`tab ${activeTab === index ? 'active' : ''}`}
+              onClick={() => handleTabClick(index)}
+            >
+              {tab.companyName}
+            </div>
+          ))}
+        </div>
+
+        <div className="chart">
+          {activeTab !== null && (
+            <ChartBar stock={tabs[activeTab].stockData} companyName={tabs[activeTab].companyName} />
+          )}
+        </div>
+      </div> */}
     </>
   );
 }
