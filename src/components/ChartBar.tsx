@@ -1,15 +1,13 @@
 import React from 'react';
-import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell } from 'recharts';
+import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell, Legend } from 'recharts';
 import { StockResponse, OutputArr } from './Main';
 
 type StockData = {
   stock: StockResponse | null;
+  companyName: string;
 }
-// type StockData = {
-//   stock: OutputArr | null;
-// }
 
-function ChartBar({ stock }: StockData): React.ReactElement {
+function ChartBar({ stock, companyName }: StockData): React.ReactElement {
 
   if (!stock) {
     return <p>No data available</p>;
@@ -38,28 +36,41 @@ function ChartBar({ stock }: StockData): React.ReactElement {
     return `${month}.${day}`;
   };
 
+  // 단위에 천 단위 콤마 추가
+  const formatYAxis = (tickItem:string) => tickItem.toLocaleString();
 
   return (
-    <BarChart width={1000} height={500} data={data} >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
-      <YAxis />
-      <Tooltip />
-      <Bar dataKey={
-        (data) => {
-          const range = [data.stck_lwpr, data.stck_hgpr]
-          return range
+    <>
+      <BarChart width={1200} height={600} data={data} syncId="synced">
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
+        <YAxis yAxisId='0' label={{ value: 'KRW', offset: '30', angle:0, position: 'top' }} 
+          tickFormatter={formatYAxis}
+          domain={['dataMin-20000', 'dataMax + 20000']}
+        />
+        <Tooltip />
+        <Legend layout='vertical' align='right' verticalAlign='middle' payload={[{value: companyName}]} />
+        <Bar dataKey={
+          (data) => {
+            const range = [data.stck_lwpr, data.stck_hgpr]
+            return range
+          }
         }
-      }
-      name={`가격(KRW)`}
-      fill = "#E94560" >
-        {data.map((item, index) => (
-          <Cell key={index} fill={(Number(item.prdy_vrss_sign) > 3) ? "#006DEE" : "#E94560"} />
-        ))}
-      </Bar>
-      {/* 누적 거래량 */}
-      <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량(백)'} />
-    </BarChart>
+        name={`가격(KRW)`} yAxisId='0'
+        fill = "#E94560" >
+          {data.map((item, index) => (
+            <Cell key={index} fill={(Number(item.prdy_vrss_sign) > 3) ? "#006DEE" : "#E94560"} />
+          ))}
+        </Bar>
+      </BarChart>
+      <BarChart width={1200} height={500} data={data} syncId="synced">
+        <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
+        <YAxis yAxisId='1' label={{ value: "누적 거래량(백)", offset: "30", angle:0, position: "top" }} tickFormatter={formatYAxis} />
+        <Tooltip />
+        {/* 누적 거래량 */}
+        <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량(백)'} yAxisId='1' fill='#67ac40'/>
+      </BarChart>
+    </>
   );
 }
 

@@ -62,6 +62,7 @@ function Main(): React.ReactElement {
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 삼성전자 005930 엘지전자 066570 네이버 035420 SK하이닉스 000660 카카오 035720
+  const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
 
   // 주식현재가 일자별 api 요청
   useEffect(() => {
@@ -103,11 +104,11 @@ function Main(): React.ReactElement {
   return (
     <>
       <div>
-        <p>Token: {token?.access_token}</p>
+        {/* <p>Token: {token?.access_token}</p> */}
         {/* <p>Stock: {JSON.stringify(stock)}</p> */}
         {/* <ChartBar stock={stock} /> */}
         {stock.map((data:StockResponse, index:number) => (
-            <ChartBar stock={data}/>
+            <ChartBar stock={data} companyName={companyName[index]} />
           )
         )}
 
