@@ -1,15 +1,16 @@
 import React from 'react';
 import './App.css';
 import Main from './components/Main';
+import { Route, Routes } from 'react-router-dom';
 
 
 // React.FunctionComponent:컴포넌트를 리턴
 const App:React.FC = () => {
   return (
-    <div className="App">
-      모의주식 웹입니다.
-      <Main />
-    </div>
+    <Routes>
+      <Route path='/' element={<Main />} />
+
+    </Routes>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ChartBar from './ChartBar';
+import Header from './Header';
 
 interface TokenResponse {
   access_token: string; // 접근토큰
@@ -34,10 +35,6 @@ export type StockResponse = {
   output: OutputArr[];     // 응답 상세
 }
 
-interface CompanyTab {
-  companyName: string;
-  stockData: StockResponse | null;
-}
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
@@ -114,6 +111,9 @@ function Main(): React.ReactElement {
 
   return (
     <>
+      <div>
+        <Header />
+      </div>
       {/* <div> */}
         {/* <p>Token: {token?.access_token}</p> */}
         {/* <p>Stock: {JSON.stringify(stock)}</p> */}
