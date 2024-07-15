@@ -36,33 +36,41 @@ export type StockResponse = {
 }
 
 // code=rwH6DBLSAVYBVmiyU-j59DT58_YeAUab33ZzK5e2-UxhJPNHe-5GKQAAAAQKPCQfAAABkLZyoEeo9NUiJo7xnA
+// 이제 인가코드를 백엔드로 전달하면 됩니다. 백엔드에서 처리하는 과정을 간단하게 설명하면 
+// 백엔드에서 이 인가코드로 액세스토큰을 발급받아 그 액세스토큰으로 유저정보를 조회해서 
+// DB에 저장한 후  백엔드에서 jwt 토큰을 프론트로 전달하면 로그인 과정은 끝납니다.
 
 
 function Main(): React.ReactElement {
-  const [token, setToken] = useState<TokenResponse | null>(null);
+  // const [token, setToken] = useState<TokenResponse | null>(null);
+  const [token, setToken] = useState<TokenResponse | null>(
+    !JSON.parse(`${localStorage.getItem('stockToken')}`)
+      ? null : JSON.parse(`${localStorage.getItem('stockToken')}`) 
+  );
   const [stock, setStock] = useState<StockResponse[]>([]);
-
+  // access_token_token_expired
   // 현재 활성화된 탭을 관리하는 상태
   const [activeTab, setActiveTab] = useState<number>(0);
 
   useEffect(() => {
-    // 토큰은 1분당 1회 발급됨
-    // proxy에 주소를 설정했기 때문에 
-    // axios.post<TokenResponse>("https://openapivts.koreainvestment.com:29443/oauth2/tokenP",{
-    axios.post<TokenResponse>("/oauth2/tokenP",{
-      "grant_type": "client_credentials",
-      "appkey":process.env.REACT_APP_APP_KEY,
-      "appsecret":process.env.REACT_APP_APP_SECRET_KEY
-    })
-    .then((response)=>{
-      setToken(response.data);
-      // console.log('토큰!!::', response.data.access_token);
-    })
-    .catch((error)=>{
-      console.log(error);      
-    })
-
+    // 토큰은 1분당 1회 발급됨, 하나 당 최대 24시간
+    if (!token) {
+      axios.post<TokenResponse>("/oauth2/tokenP",{
+        "grant_type": "client_credentials",
+        "appkey":process.env.REACT_APP_APP_KEY,
+        "appsecret":process.env.REACT_APP_APP_SECRET_KEY
+      })
+      .then((response)=>{
+        setToken(response.data);
+        // console.log('토큰!!::', response.data.access_token);
+        localStorage.setItem('stockToken', JSON.stringify(response.data))
+      })
+      .catch((error)=>{
+        console.log(error);      
+      })
+    } 
   }, []);
+  console.log('로컬토큰', JSON.parse(`${localStorage.getItem('stockToken')}`));
   
   // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
