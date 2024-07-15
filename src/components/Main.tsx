@@ -43,14 +43,6 @@ function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
   const [stock, setStock] = useState<StockResponse[]>([]);
 
-  // const [tabs, setTabs] = useState<CompanyTab[]>([
-  //   { companyName: '삼성전자', stockData: null },
-  //   { companyName: '엘지전자', stockData: null },
-  //   { companyName: '네이버', stockData: null },
-  //   { companyName: 'SK하이닉스', stockData: null },
-  //   { companyName: '카카오', stockData: null },  
-  // ]);
-
   // 현재 활성화된 탭을 관리하는 상태
   const [activeTab, setActiveTab] = useState<number>(0);
 
@@ -131,17 +123,6 @@ function Main(): React.ReactElement {
           )
         )} */}
 
-      {/* </div> */}
-      {/* <div>
-        <ul>
-          <li onClick={()=>handleTabClick(0)}>삼성전자</li>
-          <li onClick={()=>handleTabClick(1)}>엘지전자</li>
-          <li onClick={()=>handleTabClick(2)}>네이버</li>
-          <li onClick={()=>handleTabClick(3)}>SK하이닉스</li>
-          <li onClick={()=>handleTabClick(4)}>카카오</li>
-        </ul>
-      </div> */}
-
       <div>
         <div>
           <ul>
@@ -158,25 +139,6 @@ function Main(): React.ReactElement {
           )}
         </div>
       </div>
-      {/* <div>
-        <div className='tabs'>
-          {tabs.map((tab, index) => (
-            <div
-              key={index}
-              className={`tab ${activeTab === index ? 'active' : ''}`}
-              onClick={() => handleTabClick(index)}
-            >
-              {tab.companyName}
-            </div>
-          ))}
-        </div>
-
-        <div className="chart">
-          {activeTab !== null && (
-            <ChartBar stock={tabs[activeTab].stockData} companyName={tabs[activeTab].companyName} />
-          )}
-        </div>
-      </div> */}
     </>
   );
 }
