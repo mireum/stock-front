@@ -35,6 +35,8 @@ export type StockResponse = {
   output: OutputArr[];     // 응답 상세
 }
 
+// code=rwH6DBLSAVYBVmiyU-j59DT58_YeAUab33ZzK5e2-UxhJPNHe-5GKQAAAAQKPCQfAAABkLZyoEeo9NUiJo7xnA
+
 
 function Main(): React.ReactElement {
   const [token, setToken] = useState<TokenResponse | null>(null);
