@@ -43,12 +43,23 @@ export type StockResponse = {
 
 function Main(): React.ReactElement {
   // const [token, setToken] = useState<TokenResponse | null>(null);
-  const [token, setToken] = useState<TokenResponse | null>(
-    !JSON.parse(`${localStorage.getItem('stockToken')}`)
-      ? null : JSON.parse(`${localStorage.getItem('stockToken')}`) 
+  // const [token, setToken] = useState<TokenResponse | null>(
+  //   !JSON.parse(`${localStorage.getItem('stockToken')}`)
+  //     ? null : JSON.parse(`${localStorage.getItem('stockToken')}`) 
+  // );
+  const [token, setToken] = useState<TokenResponse | null>(() => {
+      const current = new Date();
+      // tokenExpiredTime가 더 크면 아직 토큰 유효기간 중, expired = true
+      const expired = current < new Date(JSON.parse(`${localStorage.getItem('tokenExpiredTime')}`))
+      if (JSON.parse(`${localStorage.getItem('stockToken')}`) && expired) {
+        return JSON.parse(`${localStorage.getItem('stockToken')}`)
+      } else {
+        return null
+      }
+    }
   );
   const [stock, setStock] = useState<StockResponse[]>([]);
-  // access_token_token_expired
+
   // 현재 활성화된 탭을 관리하는 상태
   const [activeTab, setActiveTab] = useState<number>(0);
 
@@ -62,15 +73,19 @@ function Main(): React.ReactElement {
       })
       .then((response)=>{
         setToken(response.data);
-        // console.log('토큰!!::', response.data.access_token);
-        localStorage.setItem('stockToken', JSON.stringify(response.data))
+
+        localStorage.setItem('stockToken', JSON.stringify(response.data));
+        const current = new Date();
+        const currentDay = current.setDate(current.getDate()+1);
+        const expiredDay = new Date(currentDay);
+        
+        localStorage.setItem('tokenExpiredTime', JSON.stringify(expiredDay));
       })
       .catch((error)=>{
         console.log(error);      
       })
     } 
   }, []);
-  console.log('로컬토큰', JSON.parse(`${localStorage.getItem('stockToken')}`));
   
   // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
