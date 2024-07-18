@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell } from 'recharts';
-import { StockResponse, OutputArr } from './Main';
+import { OutputArr, StockResponse } from '../model/Model';
 
 type PropsStockData = {
   stock: StockResponse | null;
