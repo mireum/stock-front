@@ -46,7 +46,7 @@ function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
         <YAxis yAxisId='0' label={{ value: 'KRW', offset: '10', angle:0, position: 'top' }} 
           tickFormatter={formatYAxis}
-          domain={['dataMin-20000', 'dataMax + 20000']}
+          domain={['dataMin-15000', 'dataMax + 15000']}
         />
         <Tooltip />
         {/* Legend 추가하면 차트 크기가 작아짐 */}
