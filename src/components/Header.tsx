@@ -1,18 +1,31 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { User } from '../model/Model';
+import styled from 'styled-components';
 
-interface User {
-  id: string,
-  nickname: string,
-  thumbnail_image: string
-}
+const HeaderContainer = styled.div`
+  background-color: aliceblue;
+  height: 50px;
+  
 
+  .title {
+    /* text-align: center; */
+    width: 100px;
+    height: 40px;
+    background-color: antiquewhite;
+    font-size: 30px;
+    font-weight: bold;
+    /* margin: 0 auto; */
+  }
+
+  .loginBox {
+
+  }
+`;
 
 function Header(): React.ReactElement {
-  // const navigate = useNavigate();
-  // const location = useLocation();
+
   const [hasCode, setHasCode] = useState<string | null>(null);
-  // const [kakaoUser, setKakaoUser] = useState<User | null>(null);
   const [kakaoUser, setKakaoUser] = useState<User | null>(
     !JSON.parse(`${localStorage.getItem('KakaoUser')}`)
     ? null
@@ -47,20 +60,22 @@ function Header(): React.ReactElement {
 
 
   return (
-    <div>
-      {/* <button onClick={() => navigate(`/login`)}>카카오톡 로그인</button> */}
-      {!kakaoUser ? 
-      <button onClick={() =>
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
-      }>카카오톡 로그인</button>
-      : <>
-          <img src="http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R110x110" alt="카카오톡 썸네일" width="50" height="50" />
-          <div>{kakaoUser.nickname} 님</div>
-          {/* 로그아웃할 때 토큰이랑 KakaoUser localstorage 삭제할 것 */}
-          <button>로그아웃</button>
-        </>
-      }
-    </div>
+    <HeaderContainer>
+      <div className='title'>주식쿨</div>
+      <div className='loginBox'>
+        {!kakaoUser ? 
+        <button onClick={() =>
+          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
+        }>카카오톡 로그인</button>
+        : <>
+            <img src="http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R110x110" alt="카카오톡 썸네일" width="50" height="50" />
+            <div>{kakaoUser.nickname} 님</div>
+            {/* 로그아웃할 때 토큰이랑 KakaoUser localstorage 삭제할 것 */}
+            <button>로그아웃</button>
+          </>
+        }
+      </div>
+    </HeaderContainer>
   );
 }
 

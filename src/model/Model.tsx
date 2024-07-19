@@ -32,3 +32,9 @@ export type StockResponse = {
   msg1: string;   // 응답 메세지
   output: OutputArr[];     // 응답 상세
 }
+
+export interface User {
+  id: string,
+  nickname: string,
+  thumbnail_image: string
+}
