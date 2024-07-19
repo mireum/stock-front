@@ -2,20 +2,27 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { User } from '../model/Model';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.div`
   background-color: aliceblue;
   height: 50px;
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 10px 6px; */
 
   .title {
-    /* text-align: center; */
+    text-align: center;
     width: 100px;
     height: 40px;
     background-color: antiquewhite;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
-    /* margin: 0 auto; */
+
+    a:first-child {
+      vertical-align: middle;
+    }
   }
 
   .loginBox {
@@ -24,6 +31,7 @@ const HeaderContainer = styled.div`
 `;
 
 function Header(): React.ReactElement {
+  const navigate = useNavigate();
 
   const [hasCode, setHasCode] = useState<string | null>(null);
   const [kakaoUser, setKakaoUser] = useState<User | null>(
@@ -61,12 +69,17 @@ function Header(): React.ReactElement {
 
   return (
     <HeaderContainer>
-      <div className='title'>주식쿨</div>
+      <div className='title cursor-pointer' onClick={() => {navigate('/')}}>
+        <a className=''>주식쿨</a>
+      </div>
       <div className='loginBox'>
-        {!kakaoUser ? 
+        {!kakaoUser
+        ? 
         <button onClick={() =>
-          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
-        }>카카오톡 로그인</button>
+          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`}>
+          <img src='./image/kakao_login_small.png' alt='카카오 로그인 아이콘'/>
+        </button>
+
         : <>
             <img src="http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R110x110" alt="카카오톡 썸네일" width="50" height="50" />
             <div>{kakaoUser.nickname} 님</div>
