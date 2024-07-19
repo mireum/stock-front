@@ -3,20 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { User } from '../model/Model';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import kakao_login_small from '../image/kakao_login_small.png';
 
 const HeaderContainer = styled.div`
+  height: 70px;
   background-color: aliceblue;
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* padding: 10px 6px; */
 
   .title {
     text-align: center;
     width: 100px;
     height: 40px;
-    background-color: antiquewhite;
     font-size: 26px;
     font-weight: bold;
 
@@ -26,7 +25,24 @@ const HeaderContainer = styled.div`
   }
 
   .loginBox {
+    .loginButton {
+      border: none;
+      background-color: #fff;
+    }
 
+    .profileBox {
+      width: 230px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 6px;
+
+      .logoutButton {
+        border-radius: 5px;
+        border: 1px solid #aaa;
+      }
+    }
   }
 `;
 
@@ -39,6 +55,18 @@ function Header(): React.ReactElement {
     ? null
     : JSON.parse(`${localStorage.getItem('KakaoUser')}`)
   );
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakaoLogout`);
+      console.log(response);
+      localStorage.removeItem('KakaoUser');
+      window.location.reload();
+      
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -75,17 +103,17 @@ function Header(): React.ReactElement {
       <div className='loginBox'>
         {!kakaoUser
         ? 
-        <button onClick={() =>
+        <button className='loginButton cursor-pointer' type='button' onClick={() =>
           window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`}>
-          <img src='./image/kakao_login_small.png' alt='카카오 로그인 아이콘'/>
+          <img src={kakao_login_small} alt='카카오 로그인 아이콘' />
         </button>
-
-        : <>
+        : <div className='profileBox'>
             <img src="http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R110x110" alt="카카오톡 썸네일" width="50" height="50" />
             <div>{kakaoUser.nickname} 님</div>
-            {/* 로그아웃할 때 토큰이랑 KakaoUser localstorage 삭제할 것 */}
-            <button>로그아웃</button>
-          </>
+            <button className='logoutButton' onClick={handleLogout}>
+              로그아웃
+            </button>
+          </div>
         }
       </div>
     </HeaderContainer>
