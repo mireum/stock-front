@@ -58,9 +58,11 @@ function Header(): React.ReactElement {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakaoLogout`);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakaoLogout`, {}, {withCredentials:true});
       console.log(response);
       localStorage.removeItem('KakaoUser');
+      setHasCode(null);
+      navigate('/');
       window.location.reload();
       
     } catch (err) {
@@ -73,7 +75,7 @@ function Header(): React.ReactElement {
     if (code) {
       setHasCode(code);
     }
-  }, []);
+  }, [hasCode]);
 
   useEffect(() => {
     const sendToken = async () => {
@@ -108,7 +110,7 @@ function Header(): React.ReactElement {
           <img src={kakao_login_small} alt='카카오 로그인 아이콘' />
         </button>
         : <div className='profileBox'>
-            <img src="http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R110x110" alt="카카오톡 썸네일" width="50" height="50" />
+            <img src={kakaoUser.thumbnail_image} alt="카카오톡 썸네일" width="50" height="50" />
             <div>{kakaoUser.nickname} 님</div>
             <button className='logoutButton' onClick={handleLogout}>
               로그아웃
