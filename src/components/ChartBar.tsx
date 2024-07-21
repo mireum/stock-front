@@ -23,8 +23,6 @@ function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
     stck_bsop_date: item.stck_bsop_date,
     prdy_vrss_sign: item.prdy_vrss_sign,
     acml_vol: item.acml_vol,
-    // stck_oprc: item.stck_oprc,
-    // stck_clpr: item.stck_clpr,
   }));
   console.log(`data::`, data);
   
@@ -41,10 +39,10 @@ function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
 
   return (
     <>
-      <BarChart width={1200} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+      <BarChart width={1000} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
-        <YAxis yAxisId='0' label={{ value: 'KRW', offset: '10', angle:0, position: 'top' }} 
+        <YAxis yAxisId='0' label={{ value: 'KRW', offset: '-24', angle:0, position: 'top' }} 
           tickFormatter={formatYAxis}
           domain={['dataMin-15000', 'dataMax + 15000']}
         />
@@ -77,9 +75,9 @@ function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
         </Bar>
       </BarChart>
 
-      <BarChart width={1200} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+      <BarChart width={1000} height={500} data={data} syncId="synced" margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
-        <YAxis yAxisId='1' label={{ value: "누적 거래량(백)", offset: "10", angle:0, position: "top" }} tickFormatter={formatYAxis} />
+        <YAxis yAxisId='1' label={{ value: "거래량(백)", offset: "-24", angle:0, position: "top" }} tickFormatter={formatYAxis} />
         <Tooltip />
         {/* 누적 거래량 */}
         <Bar dataKey={(data)=>((data.acml_vol)/1000)} name={'누적 거래량(백)'} yAxisId='1' fill='#67ac40'/>

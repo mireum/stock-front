@@ -9,7 +9,32 @@ const MainContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   /* 추후 높이 삭제 */
-  height: 2000px;
+  /* height: 2000px; */
+`;
+
+const StockContainer = styled.div`
+  display: flex;
+
+  .chartUl {
+    height: 1000px;
+  }
+  .chartLi {
+    width: 200px;
+    height: 60px;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+  }
+  .chartLi+.chartLi {
+    border-top: none;
+  }
+
+  .chartBox {
+    /* background-color: burlywood; */
+    /* padding: 10px 0px; */
+  }
 `;
 
 function Main(): React.ReactElement {
@@ -58,41 +83,41 @@ function Main(): React.ReactElement {
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 주식현재가 일자별 api 요청
-  // useEffect(() => {
-  //   const fetchStockData = async () => {
-  //     const stockCodes = ["005930", "066570", "035420", "000660", "035720"];
-  //     if (token) {
-  //       try {
-  //         const allStockData = [];
-  //         for (let code of stockCodes) {
-  //           const response = await axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price", {
-  //             headers: {
-  //               "authorization": `Bearer ${token.access_token}`,
-  //               "appkey": process.env.REACT_APP_APP_KEY,
-  //               "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
-  //               "tr_id": "FHKST01010400"
-  //             },
-  //             params: {
-  //               "FID_COND_MRKT_DIV_CODE": "J",
-  //               "FID_INPUT_ISCD": code,
-  //               "FID_PERIOD_DIV_CODE": "D",
-  //               "FID_ORG_ADJ_PRC": "1"
-  //             }
-  //           });
-  //           allStockData.push(response.data);
-  //           await sleep(500); // 각 요청 사이에 500ms 지연
-  //         }
-  //         console.log('올스톡데이터', allStockData);
-  //         setStock(allStockData);
+  useEffect(() => {
+    const fetchStockData = async () => {
+      const stockCodes = ["005930", "066570", "035420", "000660", "035720"];
+      if (token) {
+        try {
+          const allStockData = [];
+          for (let code of stockCodes) {
+            const response = await axios.get<StockResponse>("/uapi/domestic-stock/v1/quotations/inquire-daily-price", {
+              headers: {
+                "authorization": `Bearer ${token.access_token}`,
+                "appkey": process.env.REACT_APP_APP_KEY,
+                "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
+                "tr_id": "FHKST01010400"
+              },
+              params: {
+                "FID_COND_MRKT_DIV_CODE": "J",
+                "FID_INPUT_ISCD": code,
+                "FID_PERIOD_DIV_CODE": "D",
+                "FID_ORG_ADJ_PRC": "1"
+              }
+            });
+            allStockData.push(response.data);
+            await sleep(500); // 각 요청 사이에 500ms 지연
+          }
+          console.log('올스톡데이터', allStockData);
+          setStock(allStockData);
           
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
 
-  //   fetchStockData();
-  // }, [token]);
+    fetchStockData();
+  }, [token]);
 
   // 삼성전자 005930 엘지전자 066570 네이버 035420 SK하이닉스 000660 카카오 035720
   const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
@@ -104,26 +129,24 @@ function Main(): React.ReactElement {
   return (
     <>
       <MainContainer>
-        <div>
           <Header />
-        </div>
 
-        {/* <div>
+        <StockContainer>
           <div>
-            <ul>
+            <ul className='chartUl'>
               {companyName.map((name, index) => (
-                <li key={index} onClick={() => handleTabClick(index)} style={{ cursor: 'pointer', fontWeight: activeTab === index ? 'bold' : 'normal' }}>
+                <li className='chartLi' key={index} onClick={() => handleTabClick(index)} style={{ cursor: 'pointer', fontWeight: activeTab === index ? 'bold' : 'normal' }}>
                   {name}
                 </li>
               ))}
             </ul>
           </div>
-          <div>
+          <div className='chartBox'>
             {stock.length > 0 && activeTab !== null && (
               <ChartBar stock={stock[activeTab]} companyName={companyName[activeTab]} />
             )}
           </div>
-        </div> */}
+        </StockContainer>
 
       </MainContainer>
     </>
