@@ -2,26 +2,26 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ChartBar from './ChartBar';
 import Header from './Header';
-import { TokenResponse, OutputArr, StockResponse } from '../model/Model';
+import { TokenResponse, StockResponse } from '../model/Model';
 import styled from 'styled-components';
 
 const MainContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  /* 추후 높이 삭제 */
-  /* height: 2000px; */
 `;
 
 const StockContainer = styled.div`
   display: flex;
+  border: 1px solid #8a84da;
+  margin-top: 20px;
 
   .chartUl {
     height: 1000px;
+    padding: 20px 10px;
   }
   .chartLi {
     width: 200px;
     height: 60px;
-    /* text-align: center; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,7 +77,7 @@ function Main(): React.ReactElement {
         console.log(error);      
       })
     } 
-  }, []);
+  }, );
   
   // 모의투자는 1초에 2개가 한계
   const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -135,7 +135,11 @@ function Main(): React.ReactElement {
           <div>
             <ul className='chartUl'>
               {companyName.map((name, index) => (
-                <li className='chartLi' key={index} onClick={() => handleTabClick(index)} style={{ cursor: 'pointer', fontWeight: activeTab === index ? 'bold' : 'normal' }}>
+                <li className='chartLi' key={index} onClick={() => handleTabClick(index)} style={{ 
+                  cursor: 'pointer', 
+                  fontWeight: activeTab === index ? 'bold' : 'normal',
+                  backgroundColor: activeTab === index ? '#33F5FF' : '#fff'
+                }}>
                   {name}
                 </li>
               ))}
@@ -143,7 +147,7 @@ function Main(): React.ReactElement {
           </div>
           <div className='chartBox'>
             {stock.length > 0 && activeTab !== null && (
-              <ChartBar stock={stock[activeTab]} companyName={companyName[activeTab]} />
+              <ChartBar stock={stock[activeTab]} />
             )}
           </div>
         </StockContainer>

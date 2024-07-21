@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
-import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell } from 'recharts';
+import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell, TooltipProps } from 'recharts';
 import { OutputArr, StockResponse } from '../model/Model';
 
 type PropsStockData = {
   stock: StockResponse | null;
-  companyName: string;
 }
 
-function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
+const CustomTooltip = ({ active, payload }:TooltipProps<number, string>) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip" style={{backgroundColor: '#fff', opacity: '0.8', padding: '10px', lineHeight: '1.2em'} }>
+        <p className="tooltip">{`시가:  ${payload[0].payload.stck_oprc}원`}</p>
+        <p className="tooltip">{`고가:  ${payload[0].payload.stck_hgpr}원`}</p>
+        <p className="tooltip">{`저가:  ${payload[0].payload.stck_lwpr}원`}</p>
+        <p className="tooltip">{`종가:  ${payload[0].payload.stck_clpr}원`}</p>
+        <p className="tooltip">{`거래량:  ${payload[0].payload.acml_vol}주`}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+function ChartBar({ stock }: PropsStockData): React.ReactElement {
 
   if (!stock) {
     return <p>No data available</p>;
   }
-
-  console.log(`props-stock`,stock);
   
   // 필요한 데이터 변환
   const data = stock.output.reverse().map((item:OutputArr, index:number) => ({
-
+    stck_oprc: item.stck_oprc,
     stck_hgpr: item.stck_hgpr,
     stck_lwpr: item.stck_lwpr,
+    stck_clpr: item.stck_clpr,
     stck_bsop_date: item.stck_bsop_date,
     prdy_vrss_sign: item.prdy_vrss_sign,
     acml_vol: item.acml_vol,
@@ -44,9 +57,9 @@ function ChartBar({ stock, companyName }: PropsStockData): React.ReactElement {
         <XAxis dataKey='stck_bsop_date' tickFormatter={formatDate} />
         <YAxis yAxisId='0' label={{ value: 'KRW', offset: '-24', angle:0, position: 'top' }} 
           tickFormatter={formatYAxis}
-          domain={['dataMin-15000', 'dataMax + 15000']}
+          domain={['dataMin - 15000', 'dataMax + 18000']}
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         {/* Legend 추가하면 차트 크기가 작아짐 */}
         {/* <Legend layout='vertical' align='right' verticalAlign='top' 
           wrapperStyle={{
