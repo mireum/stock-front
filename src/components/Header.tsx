@@ -112,7 +112,7 @@ function Header(): React.ReactElement {
         : <div className='profileBox'>
             <img src={kakaoUser.thumbnail_image} alt="카카오톡 썸네일" width="50" height="50" />
             <div>{kakaoUser.nickname} 님</div>
-            <button className='logoutButton' onClick={handleLogout}>
+            <button className='logoutButton cursor-pointer' onClick={handleLogout}>
               로그아웃
             </button>
           </div>
