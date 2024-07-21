@@ -7,13 +7,14 @@ import kakao_login_small from '../image/kakao_login_small.png';
 
 const HeaderContainer = styled.div`
   height: 70px;
-  background-color: aliceblue;
+  background-color: #33F5FF;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   .title {
     text-align: center;
+    color: #F54F7B;
     width: 100px;
     height: 40px;
     font-size: 26px;
@@ -27,7 +28,8 @@ const HeaderContainer = styled.div`
   .loginBox {
     .loginButton {
       border: none;
-      background-color: #fff;
+      background-color: #33F5FF;
+      padding: 0px 20px;
     }
 
     .profileBox {
