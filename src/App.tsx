@@ -20,6 +20,13 @@ const GlobalStyle = createGlobalStyle`
   .cursor-pointer {
     cursor: pointer;
   }
+  .red-text {
+    color: red;
+  }
+
+  .green-text {
+    color: green;
+  }
 `;
 
 // React.FunctionComponent:컴포넌트를 리턴
