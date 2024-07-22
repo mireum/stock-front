@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Bar, Cell, TooltipProps } from 'recharts';
-import { OutputArr, StockResponse } from '../model/Model';
-
-type PropsStockData = {
-  stock: StockResponse | null;
-}
+import { OutputArr, PropsStockData, StockResponse } from '../model/Model';
 
 const CustomTooltip = ({ active, payload }:TooltipProps<number, string>) => {
   if (active && payload && payload.length) {

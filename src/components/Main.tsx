@@ -4,6 +4,7 @@ import ChartBar from './ChartBar';
 import Header from './Header';
 import { TokenResponse, StockResponse } from '../model/Model';
 import styled from 'styled-components';
+import StockHeader from './StockHeader';
 
 const MainContainer = styled.div`
   max-width: 1200px;
@@ -129,8 +130,10 @@ function Main(): React.ReactElement {
   return (
     <>
       <MainContainer>
-          <Header />
-
+        <Header />
+        {/* 여기 주식정보 */}
+        <StockHeader stock={stock[activeTab]} name={companyName[activeTab]} />
+        
         <StockContainer>
           <div>
             <ul className='chartUl'>

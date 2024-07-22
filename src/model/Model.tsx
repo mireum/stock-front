@@ -38,3 +38,7 @@ export interface User {
   nickname: string,
   thumbnail_image: string
 }
+
+export type PropsStockData = {
+  stock: StockResponse | null;
+}
