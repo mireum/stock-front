@@ -52,9 +52,9 @@
   "overrides": {
     "@type/react": "^18.0.0"
   },
-  "proxy": "https://openapivts.koreainvestment.com:29443",
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "@types/dotenv": "^8.2.0"
-  }
+  },
+  "proxy": "https://openapivts.koreainvestment.com:29443"
 }

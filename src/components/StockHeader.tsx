@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { n, StockResponse } from "../model/Model";
+import { n, StockResponse, TokenResponse } from "../model/Model";
+import axios from "axios";
 
 const StockHeaderContainer = styled.div`
   height: 100px;
@@ -11,6 +12,7 @@ const StockHeaderContainer = styled.div`
 
   .waiting {
     font-size: 30px;
+    margin: 0 auto;
   }
 
   .name {
@@ -34,17 +36,63 @@ const StockHeaderContainer = styled.div`
 `;
 
 interface PropsData {
+  token: TokenResponse | null;
   stock: StockResponse | null;
   name: string;
 }
 
-
-const StockHeader = ({ stock, name }: PropsData) => {
-
-  console.log('stockHeader', stock);
+const StockHeader = ({ token, stock, name }: PropsData) => {
   const data = stock?.output[29];
   const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'green-text');
   
+  // 매수 VTTC0802U
+  const handleBuyTrade = async () => {
+    try {
+      const response = await axios.post("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/trading/order-cash", {
+        headers: {
+          "authorization": `Bearer ${token?.access_token}`,
+          "appkey": process.env.REACT_APP_APP_KEY,
+          "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
+          "tr_id": "VTTC0802U",
+        },
+        body: {
+          "CANO": "64387084",
+          "ACNT_PRDT_CD": "01",
+          "PDNO": "005930",
+          "ORD_DVSN": "00",
+          "ORD_QTY": "1",
+          "ORD_UNPR": "73000"
+
+        }
+      }, {withCredentials:true});
+      console.log('주식매수', response);
+      // navigate('/');
+      // window.location.reload();
+      
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // // 매도 VTTC0801U
+  // const handleTrade = async () => {
+  //   try {
+  //     const response = await axios.post(`/uapi/domestic-stock/v1/trading/order-cash`, {
+  //       headers: {
+  //         "authorization": `Bearer ${token?.access_token}`,
+  //         "appkey": process.env.REACT_APP_APP_KEY,
+  //         "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
+  //         "tr_id": 
+  //       }
+  //     }, {withCredentials:true});
+  //     console.log(response);
+  //     // navigate('/');
+  //     // window.location.reload();
+      
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   return (
     <StockHeaderContainer>
       {!stock ? 
@@ -68,6 +116,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
             <div className="acml">
               {data ? `거래량 ${n(Number(data?.acml_vol))} 주` : null}
             </div>
+            <button onClick={handleBuyTrade}></button>
           </div>
         </>
       }

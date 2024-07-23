@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { User } from '../model/Model';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import kakao_login_small from '../image/kakao_login_small.png';
 
 const HeaderContainer = styled.div`
@@ -19,10 +19,6 @@ const HeaderContainer = styled.div`
     height: 40px;
     font-size: 26px;
     font-weight: bold;
-
-    a:first-child {
-      vertical-align: middle;
-    }
   }
 
   .loginBox {
@@ -102,7 +98,9 @@ function Header(): React.ReactElement {
   return (
     <HeaderContainer>
       <div className='title cursor-pointer' onClick={() => {navigate('/')}}>
-        <a className=''>주식쿨</a>
+      {/* <div className='title cursor-pointer' > */}
+        {/* <a href={undefined}>주식쿨</a> */}
+        <Link style={{ verticalAlign: 'middle', textDecoration: "none"}} to='/'>주식쿨</Link>
       </div>
       <div className='loginBox'>
         {!kakaoUser
