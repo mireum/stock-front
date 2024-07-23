@@ -43,4 +43,4 @@ export type PropsStockData = {
   stock: StockResponse | null;
 }
 
-export const n = (n:number) => n.toLocaleString('');
+export const n = (n:number) => n.toLocaleString('KO-kr');

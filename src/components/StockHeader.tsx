@@ -66,7 +66,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
               {`전일 대비 ${data?.prdy_ctrt} %`}
             </div>
             <div className="acml">
-              {data ? `${n(Number(data?.acml_vol))} 주` : null}
+              {data ? `거래량 ${n(Number(data?.acml_vol))} 주` : null}
             </div>
           </div>
         </>
