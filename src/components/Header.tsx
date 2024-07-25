@@ -73,7 +73,8 @@ function Header(): React.ReactElement {
     if (code) {
       setHasCode(code);
     }
-  }, [hasCode]);
+  }, []);
+  // }, [hasCode]);
 
   useEffect(() => {
     const sendToken = async () => {
@@ -82,7 +83,7 @@ function Header(): React.ReactElement {
           const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakao`, {
             code: hasCode
           }, {withCredentials: true});
-          console.log('성공', res.data.response);
+          console.log('로그인 결과::', res.data.response);
           setKakaoUser(res.data.response);
           // 새로고침 방지
           localStorage.setItem('KakaoUser', JSON.stringify(res.data.response));
