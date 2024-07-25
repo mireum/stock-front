@@ -48,7 +48,11 @@ const StockHeader = ({ token, stock, name }: PropsData) => {
   // 매수 VTTC0802U
   const handleBuyTrade = async () => {
     try {
-      const response = await axios(`${process.env.REACT_APP_BACKEND_URL}`)
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trade/buy`, {
+
+      }, {withCredentials:true});
+      console.log('buy::', response);
+      
     } catch (err) {
       console.error(err);
     }
