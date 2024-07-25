@@ -48,27 +48,7 @@ const StockHeader = ({ token, stock, name }: PropsData) => {
   // 매수 VTTC0802U
   const handleBuyTrade = async () => {
     try {
-      const response = await axios.post("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/trading/order-cash", {
-        headers: {
-          "authorization": `Bearer ${token?.access_token}`,
-          "appkey": process.env.REACT_APP_APP_KEY,
-          "appsecret": process.env.REACT_APP_APP_SECRET_KEY,
-          "tr_id": "VTTC0802U",
-        },
-        body: {
-          "CANO": "64387084",
-          "ACNT_PRDT_CD": "01",
-          "PDNO": "005930",
-          "ORD_DVSN": "00",
-          "ORD_QTY": "1",
-          "ORD_UNPR": "73000"
-
-        }
-      }, {withCredentials:true});
-      console.log('주식매수', response);
-      // navigate('/');
-      // window.location.reload();
-      
+      const response = await axios(`${process.env.REACT_APP_BACKEND_URL}`)
     } catch (err) {
       console.error(err);
     }
