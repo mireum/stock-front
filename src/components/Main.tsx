@@ -57,7 +57,7 @@ function Main(): React.ReactElement {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   useEffect(() => {
-    // 토큰은 1분당 1회 발급됨, 하나 당 최대 24시간
+    // 한국투자 토큰은 1분당 1회 발급됨, 하나 당 최대 24시간
     if (!token) {
       axios.post<TokenResponse>("/oauth2/tokenP",{
         "grant_type": "client_credentials",
