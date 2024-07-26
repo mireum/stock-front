@@ -33,7 +33,7 @@ function ChartBar({ stock }: PropsStockData): React.ReactElement {
     prdy_vrss_sign: item.prdy_vrss_sign,
     acml_vol: item.acml_vol,
   }));
-  console.log(`data::`, data);
+  // console.log(`data::`, data);
   
   // 날짜를 문자열로 받아서 MM.DD 형식으로 변환
   const formatDate = (date:string) => {

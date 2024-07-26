@@ -43,13 +43,13 @@ interface PropsData {
 
 const StockHeader = ({ token, stock, name }: PropsData) => {
   const data = stock?.output[29];
-  const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'green-text');
+  const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'blue-text');
   
   // 매수 VTTC0802U
   const handleBuyTrade = async () => {
     try {
       const token = JSON.parse(`${localStorage.getItem('stockToken')}`).access_token;
-      console.log(token);
+      // console.log(token);
       
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trade/buy`, {
         token

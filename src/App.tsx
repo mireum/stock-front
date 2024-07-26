@@ -21,11 +21,11 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
   .red-text {
-    color: red;
+    color: #E94560;
   }
 
-  .green-text {
-    color: green;
+  .blue-text {
+    color: #006DEE;
   }
 `;
 
