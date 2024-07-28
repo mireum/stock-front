@@ -56,7 +56,9 @@ function Header(): React.ReactElement {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakaoLogout`, {}, {withCredentials:true});
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/kakaoLogout`, {
+        kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
+      }, {withCredentials:true});
       console.log(response);
       localStorage.removeItem('KakaoUser');
       setHasCode(null);
