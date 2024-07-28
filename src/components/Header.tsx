@@ -101,8 +101,6 @@ function Header(): React.ReactElement {
   return (
     <HeaderContainer>
       <div className='title cursor-pointer' onClick={() => {navigate('/')}}>
-      {/* <div className='title cursor-pointer' > */}
-        {/* <a href={undefined}>주식쿨</a> */}
         <Link style={{ verticalAlign: 'middle', textDecoration: "none"}} to='/'>주식쿨</Link>
       </div>
       <div className='loginBox'>

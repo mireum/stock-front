@@ -132,7 +132,7 @@ function Main(): React.ReactElement {
       <MainContainer>
         <Header />
         {/* 여기 주식정보 */}
-        <StockHeader token={token} stock={stock[activeTab]} name={companyName[activeTab]} />
+        <StockHeader stock={stock[activeTab]} name={companyName[activeTab]} />
         
         <StockContainer>
           <div>
