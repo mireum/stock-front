@@ -11,6 +11,17 @@ const MainContainer = styled.div`
   margin: 0 auto;
 `;
 
+const ModalContainer = styled.div`
+  width: 1000px;
+  height: 70%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: darkkhaki;
+  z-index: 1;
+`;
+
 const StockContainer = styled.div`
   display: flex;
   border: 1px solid #8a84da;
@@ -30,11 +41,6 @@ const StockContainer = styled.div`
   }
   .chartLi+.chartLi {
     border-top: none;
-  }
-
-  .chartBox {
-    /* background-color: burlywood; */
-    /* padding: 10px 0px; */
   }
 `;
 
@@ -148,7 +154,7 @@ function Main(): React.ReactElement {
               ))}
             </ul>
           </div>
-          <div className='chartBox'>
+          <div>
             {stock.length > 0 && activeTab !== null && (
               <ChartBar stock={stock[activeTab]} />
             )}
