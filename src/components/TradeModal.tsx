@@ -22,13 +22,13 @@ const ContentBox = styled.div`
   width: 1000px;
   height: 600px;
   background-color: skyblue;
+  z-index: 1;
 `;
 const Backdrop = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
-  /* z-index: 1; */
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
@@ -58,7 +58,15 @@ const TradeModal = ({ onClickToggleModal, children }: PropsWithChildren<ModalDef
     <ModalContainer>
             
       {/* <ContentBox>{children}</ContentBox> */}
-      <ContentBox>모달창입니당</ContentBox>
+      <ContentBox>
+        {children}
+        {/* <h2>주식 매수</h2>
+        <div>지정가</div>
+        <div>시장가</div>
+        <div>
+          <input type='number'   />
+        </div> */}
+      </ContentBox>
       <Backdrop onClick={(e: React.MouseEvent) => {
         e.preventDefault();
         if (onClickToggleModal) onClickToggleModal();}} 

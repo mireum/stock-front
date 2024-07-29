@@ -17,12 +17,10 @@ const StockHeaderContainer = styled.div`
     font-size: 30px;
     margin: 0 auto;
   }
-
   .name {
     font-size: 26px;
     font-weight: bold;
   }
-
   .leftStockHeader {
     padding-left: 20px;
     line-height: 2.0rem;
@@ -31,10 +29,8 @@ const StockHeaderContainer = styled.div`
     padding-right: 20px;
     line-height: 2.0rem;
   }
-
   .ctrt {
     font-size: 20px;
-
   }
 `;
 
@@ -43,8 +39,39 @@ interface PropsData {
   name: string;
 }
 
+// type BuyTrade = {
+//   onSubmit: (form: {Stockname: string; price: number; stockNumber: number; }) => void
+// };
+
 const StockHeader = ({ stock, name }: PropsData) => {
   const [openTradeModal, setOpenTradeModal] = useState<boolean>(false);
+  const [activeModalTab, setActiveModalTab] = useState<number>(0);
+  const [form, setForm] = useState({
+    Stockname: '',
+    price: 0,
+    stockNumber: 0,
+  });
+  const {Stockname, price, stockNumber} = form;
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+    setForm({
+      ...form,
+     [name]: value,
+    })
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // onSubmit(form);
+    setForm({
+      Stockname: '',
+      price: 0,
+      stockNumber: 0,
+    });
+    console.log(form);
+    
+  };
+
   const data = stock?.output[29];
   const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'blue-text');
   
@@ -57,7 +84,24 @@ const StockHeader = ({ stock, name }: PropsData) => {
       <StockHeaderContainer>
         {openTradeModal && (
           <TradeModal onClickToggleModal={onClickToggleModal} >
-          
+            {/* 여기 children */}
+            <h2>주식 매수</h2>
+            <ul>
+              <li className="cursor-pointer" onClick={() => setActiveModalTab(0)} style={{
+                  fontWeight: activeModalTab === 0 ? 'bold' : 'normal',
+                  backgroundColor: activeModalTab === 0 ? '#33F5FF' : '#fff'
+                }}>지정가</li>
+              <li className="cursor-pointer" onClick={() => setActiveModalTab(1)} style={{
+                  fontWeight: activeModalTab === 1 ? 'bold' : 'normal',
+                  backgroundColor: activeModalTab === 1 ? '#33F5FF' : '#fff'
+                }}>시장가</li>
+            </ul>
+            <form onSubmit={handleSubmit}>
+              <input type="" name="주식이름" value={Stockname} onChange={onChange} />
+              <input type="number" name="가격" value={price} onChange={onChange} />
+              <input type="number" name="주 수량" value={stockNumber} onChange={onChange} />
+              <button type="submit" >매수하기</button>
+            </form>
           </TradeModal>
         )}
 

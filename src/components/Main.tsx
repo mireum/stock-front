@@ -10,18 +10,6 @@ const MainContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 `;
-
-const ModalContainer = styled.div`
-  width: 1000px;
-  height: 70%;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: darkkhaki;
-  z-index: 1;
-`;
-
 const StockContainer = styled.div`
   display: flex;
   border: 1px solid #8a84da;
@@ -144,8 +132,7 @@ function Main(): React.ReactElement {
           <div>
             <ul className='chartUl'>
               {companyName.map((name, index) => (
-                <li className='chartLi' key={index} onClick={() => handleTabClick(index)} style={{ 
-                  cursor: 'pointer', 
+                <li className='chartLi cursor-pointer' key={index} onClick={() => handleTabClick(index)} style={{
                   fontWeight: activeTab === index ? 'bold' : 'normal',
                   backgroundColor: activeTab === index ? '#33F5FF' : '#fff'
                 }}>
