@@ -102,7 +102,7 @@ function Main(): React.ReactElement {
             allStockData.push(response.data);
             await sleep(500); // 각 요청 사이에 500ms 지연
           }
-          console.log('올스톡데이터', allStockData);
+          // console.log('올스톡데이터', allStockData);
           setStock(allStockData);
           
         } catch (error) {

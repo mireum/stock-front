@@ -53,6 +53,7 @@ interface PropsData {
 const StockHeader = ({ stock, name }: PropsData) => {
   const [openTradeModal, setOpenTradeModal] = useState<boolean>(false);
   const [activeModalTab, setActiveModalTab] = useState<number>(0);
+  const [countBuy, setCountBuy] = useState<number>(0);
   const [form, setForm] = useState({
     Stockname: name,
     price: 0,
@@ -66,24 +67,24 @@ const StockHeader = ({ stock, name }: PropsData) => {
         ...prevForm,
         Stockname: name,
         // price: Number(data?.stck_oprc),
-        price: 0,
+        // price: 0,
       }));
     }
   }, [openTradeModal]);
 
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    setForm({
-      ...form,
+    setForm((prev) => ({
+      ...prev,
      [name]: value,
-    })
+    }))
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // onSubmit(form);
     setForm({
-      Stockname: '',
+      Stockname: name,
       price: 0,
       stockNumber: 0,
     });
@@ -107,17 +108,23 @@ const StockHeader = ({ stock, name }: PropsData) => {
             {/* 여기 children */}
             <h2>주식 매수</h2>
             <ul>
-              <TabLi $isActive={activeModalTab === 0} onClick={() => setActiveModalTab(0)}>지정가</TabLi>
-              <TabLi $isActive={activeModalTab === 1} onClick={() => setActiveModalTab(1)}>시장가</TabLi>
+              <TabLi $isActive={activeModalTab === 0} onClick={() => {
+                setActiveModalTab(0);
+                setForm({...form, price: Number(0)})
+                }}>지정가</TabLi>
+              <TabLi $isActive={activeModalTab === 1} onClick={() => {
+                setActiveModalTab(1);
+                setForm({...form, price: Number(data?.stck_hgpr)})
+                }}>시장가</TabLi>
             </ul>
             <div>현재 가격: {nowPrice} </div>
             <div>현재 시장가: {data?.stck_hgpr} </div>
             <form onSubmit={handleSubmit}>
-              <input type="text" name="주식이름" value={Stockname} onChange={onChange} hidden />
-              <JijungInput hidden={!(activeModalTab === 0) ? false : true } type="number" name="가격" value={price} onChange={onChange} />
-              <SijangInput hidden={!(activeModalTab === 0) ? true : false } type="number" name="주 수량" value={stockNumber} onChange={onChange} />
-              {/* <input type="number" name="가격" value={price} onChange={onChange} /> */}
-              {/* <input type="number" name="주 수량" value={stockNumber} onChange={onChange} /> */}
+              <input type="text" name="stockname" value={Stockname} onChange={onChange} hidden />
+              <JijungInput hidden={activeModalTab !== 0} type="number" name="price" value={price} onChange={onChange} />
+              <SijangInput hidden={activeModalTab !== 1} type="number" name="price" value={price} onChange={onChange} />
+              <button onClick={handlePrice}></button>
+              {/* <SijangInput hidden={activeModalTab !== 1} type="number" name="stockNumber" value={stockNumber} onChange={onChange} /> */}
               <button type="submit" >매수하기</button>
             </form>
           </TradeModal>
