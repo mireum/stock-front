@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { n, StockResponse } from "../model/Model";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TradeModal from "./TradeModal";
-
 
 const StockHeaderContainer = styled.div`
   height: 100px;
