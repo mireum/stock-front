@@ -46,14 +46,10 @@ interface PropsData {
   name: string;
 }
 
-// type BuyTrade = {
-//   onSubmit: (form: {Stockname: string; price: number; stockNumber: number; }) => void
-// };
-
 const StockHeader = ({ stock, name }: PropsData) => {
   const [openTradeModal, setOpenTradeModal] = useState<boolean>(false);
   const [activeModalTab, setActiveModalTab] = useState<number>(0);
-  const [countBuy, setCountBuy] = useState<number>(0);
+  const [countBuy, setCountBuy] = useState<number>(1);
   const [form, setForm] = useState({
     Stockname: name,
     price: 0,
@@ -72,6 +68,11 @@ const StockHeader = ({ stock, name }: PropsData) => {
     }
   }, [openTradeModal]);
 
+  const handleBuyPrice = () => {
+    setCountBuy(countBuy + 1);
+    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1)});
+  };
+
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     setForm((prev) => ({
@@ -79,22 +80,21 @@ const StockHeader = ({ stock, name }: PropsData) => {
      [name]: value,
     }))
   };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // onSubmit(form);
     setForm({
-      Stockname: name,
+      Stockname: '',
       price: 0,
       stockNumber: 0,
     });
+    setCountBuy(0);
     console.log(form);
     
   };
 
   const data = stock?.output[29];
   const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'blue-text');
-  // const ref = useRef(null);
+
   const onClickToggleModal = useCallback(() => {
     setOpenTradeModal(!openTradeModal);
   }, [openTradeModal]);
@@ -110,10 +110,11 @@ const StockHeader = ({ stock, name }: PropsData) => {
             <ul>
               <TabLi $isActive={activeModalTab === 0} onClick={() => {
                 setActiveModalTab(0);
-                setForm({...form, price: Number(0)})
+                setForm({...form, price: Number(0)}); setCountBuy(1);
                 }}>지정가</TabLi>
               <TabLi $isActive={activeModalTab === 1} onClick={() => {
                 setActiveModalTab(1);
+                // setForm({...form, price: Number(data?.stck_hgpr) * countBuy})
                 setForm({...form, price: Number(data?.stck_hgpr)})
                 }}>시장가</TabLi>
             </ul>
@@ -123,7 +124,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
               <input type="text" name="stockname" value={Stockname} onChange={onChange} hidden />
               <JijungInput hidden={activeModalTab !== 0} type="number" name="price" value={price} onChange={onChange} />
               <SijangInput hidden={activeModalTab !== 1} type="number" name="price" value={price} onChange={onChange} />
-              <button onClick={handlePrice}></button>
+              <button type="button" onClick={handleBuyPrice}>+{countBuy}주</button>
               {/* <SijangInput hidden={activeModalTab !== 1} type="number" name="stockNumber" value={stockNumber} onChange={onChange} /> */}
               <button type="submit" >매수하기</button>
             </form>
