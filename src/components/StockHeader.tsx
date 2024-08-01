@@ -12,6 +12,11 @@ const StockHeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  input[type="number"]:disabled {
+    background-color: aliceblue;
+    font-weight: bold;
+  }
+
   .waiting {
     font-size: 30px;
     margin: 0 auto;
@@ -36,9 +41,12 @@ const TabLi = styled.li<{ $isActive: boolean }>`
   cursor: pointer;
   font-weight: ${({ $isActive }) => ($isActive ? 'bold' : 'normal')};
   background-color: ${({ $isActive }) => ($isActive ? '#33F5FF' : '#fff')};
-`;
-const JijungInput = styled.input<{ hidden: boolean }>``;
-const SijangInput = styled.input<{ hidden: boolean }>``;
+
+  `;
+  // input[type="number"]:disabled {
+  //   background-color: aliceblue;
+  //   font-weight: bold;
+  // }
 
 interface PropsData {
   stock: StockResponse | null;
@@ -61,34 +69,37 @@ const StockHeader = ({ stock, name }: PropsData) => {
       setForm((prevForm) => ({
         ...prevForm,
         Stockname: name,
-        // price: Number(data?.stck_oprc),
-        // price: 0,
       }));
     }
   }, [openTradeModal]);
 
   const handleBuyPrice = () => {
     setCountBuy(countBuy + 1);
-    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1)});
+    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1), stockNumber: countBuy+1});
   };
 
-  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {    
     const {name, value} = e.target;
     setForm((prev) => ({
       ...prev,
      [name]: value,
+     stockNumber: Number((Number(e.target.value) / nowPrice).toFixed(3))
     }))
   };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setForm({
-      Stockname: '',
-      price: 0,
-      stockNumber: 0,
-    });
-    setCountBuy(0);
-    console.log(form);
-    
+    if (price < nowPrice && activeModalTab === 0) alert('현재 가격 미만으로는 구매하실 수 없습니다!');
+    else {
+      setForm({
+        Stockname: '',
+        price: 0,
+        stockNumber: 0,
+      });
+      setCountBuy(0);
+      console.log(form);
+      
+    }
   };
 
   const data = stock?.output[29];
@@ -99,6 +110,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
   }, [openTradeModal]);
 
   const nowPrice = (Number(data?.stck_hgpr) + Number(data?.stck_lwpr)) / 2
+  
   return (
     <>
       <StockHeaderContainer>
@@ -119,13 +131,16 @@ const StockHeader = ({ stock, name }: PropsData) => {
             </ul>
             <div>현재 가격: {nowPrice} </div>
             <div>현재 시장가: {data?.stck_hgpr} </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               <input type="text" name="stockname" value={Stockname} onChange={onChange} hidden />
-              <JijungInput hidden={activeModalTab !== 0} type="number" name="price" value={price} onChange={onChange} />
-              <SijangInput hidden={activeModalTab !== 1} type="number" name="price" value={price} onChange={onChange} />
-              <button type="button" onClick={handleBuyPrice}>+{countBuy}주</button>
-              {/* <SijangInput hidden={activeModalTab !== 1} type="number" name="stockNumber" value={stockNumber} onChange={onChange} /> */}
-              <button type="submit" >매수하기</button>
+              {/* 지정가 */}
+              <input hidden={activeModalTab !== 0} min={nowPrice} type="number" name="price" value={price} onChange={onChange} />
+              <p hidden={activeModalTab !== 0}>모의주식이므로 현재 가격 미만에선 구매할 수 없습니다.</p>
+              <div hidden={activeModalTab !== 0}>구매: {(price / nowPrice).toFixed(3)}주</div>
+              {/* 시장가 */}
+              <input hidden={activeModalTab !== 1} disabled min={data?.stck_hgpr} type="number" name="price" value={price} onChange={onChange} />
+              <button type="button" hidden={activeModalTab !== 1} onClick={handleBuyPrice}>+{countBuy}주</button>
+              <button type="submit">매수하기</button>
             </form>
           </TradeModal>
         )}
