@@ -21,15 +21,64 @@ const ModalContainer = styled.div`
 const ContentBox = styled.div`
   width: 1000px;
   height: 600px;
-  background-color: skyblue;
+  background-color: #FFF;
   z-index: 1;
   text-align: center;
+  padding: 30px;
 
   h2 {
     font-size: 30px;
     font-weight: bold;
+    margin-top: 50px;
   }
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    font-size: 20px;
+  }
+  li + li { margin-left: 100px; }
+  .info1 { padding: 5px; }
+  input {
+    margin: 20px;
+    border: 1px solid black;
+    height: 1.5rem;
+    font-size: 20px;
+  }
+  input[type="number"]:disabled {
+    background-color: aliceblue;
+    font-weight: bold;
+  }
+  /* 화살표 없애기 */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .desc { font-size: 14px }
+  .btnBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .plusOneBtn { margin-top: 20px; font-weight: bold; }
+  .buyBtn {
+    width: 8rem;
+    height: 3rem;
+    border: none;
+    background-color: #6d9df7;
+    border-radius: 7px;
+    margin-top: 40px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  /* button {
+    background-color: #6d9df7;
+  } */
 `;
+
 const Backdrop = styled.div`
   width: 100vw;
   height: 100vh;
