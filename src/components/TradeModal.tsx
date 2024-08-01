@@ -23,6 +23,12 @@ const ContentBox = styled.div`
   height: 600px;
   background-color: skyblue;
   z-index: 1;
+  text-align: center;
+
+  h2 {
+    font-size: 30px;
+    font-weight: bold;
+  }
 `;
 const Backdrop = styled.div`
   width: 100vw;

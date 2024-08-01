@@ -41,8 +41,8 @@ const TabLi = styled.li<{ $isActive: boolean }>`
   cursor: pointer;
   font-weight: ${({ $isActive }) => ($isActive ? 'bold' : 'normal')};
   background-color: ${({ $isActive }) => ($isActive ? '#33F5FF' : '#fff')};
-
   `;
+  
   // input[type="number"]:disabled {
   //   background-color: aliceblue;
   //   font-weight: bold;
@@ -62,7 +62,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
     price: 0,
     stockNumber: 0,
   });
-  const {Stockname, price, stockNumber} = form;
+  const {Stockname, price} = form;
 
   useEffect(() => {
     if (openTradeModal) {
@@ -71,7 +71,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
         Stockname: name,
       }));
     }
-  }, [openTradeModal]);
+  }, [openTradeModal, name]);
 
   const handleBuyPrice = () => {
     setCountBuy(countBuy + 1);
@@ -97,8 +97,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
         stockNumber: 0,
       });
       setCountBuy(0);
-      console.log(form);
-      
+      // console.log(form);
     }
   };
 
@@ -116,7 +115,6 @@ const StockHeader = ({ stock, name }: PropsData) => {
       <StockHeaderContainer>
         {openTradeModal && (
           <TradeModal onClickToggleModal={onClickToggleModal} >
-            {/* 여기 children */}
             <h2>주식 매수</h2>
             <ul>
               <TabLi $isActive={activeModalTab === 0} onClick={() => {
