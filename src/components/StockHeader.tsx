@@ -90,7 +90,8 @@ const StockHeader = ({ stock, name }: PropsData) => {
       // 서버로 전송
       try {
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trade/buystock`, {
-          form
+          form,
+          kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
         }, {withCredentials: true});
         console.log('서브밋', res);
         
@@ -141,8 +142,8 @@ const StockHeader = ({ stock, name }: PropsData) => {
               <input hidden={activeModalTab !== 1} disabled min={data?.stck_hgpr} type="number" name="price" value={price} onChange={onChange} />
               <p className="desc" hidden={activeModalTab !== 1}>현재 시장가 이상에서 구매할 수 있습니다.</p>
               <div className="btnBox">
-                <button className="plusOneBtn" type="button" hidden={activeModalTab !== 1} onClick={handleBuyPrice}>+{countBuy}주</button>
-                <button className="buyBtn" type="submit">매수하기</button>
+                <button className="plusOneBtn cursor-pointer" type="button" hidden={activeModalTab !== 1} onClick={handleBuyPrice}>+{countBuy}주</button>
+                <button className="buyBtn cursor-pointer" type="submit">매수하기</button>
               </div>
             </form>
           </TradeModal>
