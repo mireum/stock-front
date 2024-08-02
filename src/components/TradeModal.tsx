@@ -74,9 +74,6 @@ const ContentBox = styled.div`
     font-size: 18px;
     font-weight: bold;
   }
-  /* button {
-    background-color: #6d9df7;
-  } */
 `;
 
 const Backdrop = styled.div`

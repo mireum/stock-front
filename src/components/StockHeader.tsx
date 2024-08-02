@@ -78,7 +78,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
     }))
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (price < nowPrice && activeModalTab === 0) alert('현재 가격 미만으로는 구매하실 수 없습니다!');
     else {
@@ -87,6 +87,17 @@ const StockHeader = ({ stock, name }: PropsData) => {
         price: 0,
         stockNumber: 0,
       });
+      // 서버로 전송
+      try {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trade/buystock`, {
+          form
+        }, {withCredentials: true});
+        console.log('서브밋', res);
+        
+      } catch (err) {
+        console.error(err);
+        
+      }
       setCountBuy(0);
       // console.log(form);
     }
