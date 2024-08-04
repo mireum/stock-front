@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { User } from '../model/Model';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import kakao_login_small from '../image/kakao_login_small.png';
 
 const HeaderContainer = styled.div`
@@ -99,28 +99,32 @@ function Header(): React.ReactElement {
 
 
   return (
-    <HeaderContainer>
-      <div className='title cursor-pointer' onClick={() => navigate('/')}>
-        <Link style={{ verticalAlign: 'middle', textDecoration: "none"}} to='/'>주식쿨</Link>
-      </div>
-      <div className='loginBox'>
-        {!kakaoUser
-        ? 
-        <button className='loginButton cursor-pointer' type='button' onClick={() =>
-          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`}>
-          <img src={kakao_login_small} alt='카카오 로그인 아이콘' />
-        </button>
-        : <div className='profileBox'>
-            <img src={kakaoUser.thumbnail_image} alt="카카오톡 썸네일" width="50" height="50" />
-            <div>{kakaoUser.nickname} 님</div>
-            <button className='logButton cursor-pointer' onClick={() => navigate('/mystock')}>내 주식</button>
-            <button className='logButton cursor-pointer' onClick={handleLogout}>
-              로그아웃
-            </button>
-          </div>
-        }
-      </div>
-    </HeaderContainer>
+    <>
+      <HeaderContainer>
+        <div className='title cursor-pointer' onClick={() => navigate('/')}>
+          <Link style={{ verticalAlign: 'middle', textDecoration: "none"}} to='/'>주식쿨</Link>
+        </div>
+        <div className='loginBox'>
+          {!kakaoUser
+          ? 
+          <button className='loginButton cursor-pointer' type='button' onClick={() =>
+            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`}>
+            <img src={kakao_login_small} alt='카카오 로그인 아이콘' />
+          </button>
+          : <div className='profileBox'>
+              <img src={kakaoUser.thumbnail_image} alt="카카오톡 썸네일" width="50" height="50" />
+              <div>{kakaoUser.nickname} 님</div>
+              <button className='logButton cursor-pointer' onClick={() => navigate('/mystock')}>내 주식</button>
+              <button className='logButton cursor-pointer' onClick={handleLogout}>
+                로그아웃
+              </button>
+            </div>
+          }
+        </div>
+      </HeaderContainer>
+      <Outlet />
+      {/* <Footer /> */}
+    </>
   );
 }
 

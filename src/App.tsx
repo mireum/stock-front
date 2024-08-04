@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import MyStock from './components/MyStock';
+import Header from './components/Header';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -37,8 +38,10 @@ const App:React.FC = () => {
     <>
       <GlobalStyle />
       <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/mystock' element={<MyStock />} />
+        <Route path='/' element={<Header />} >
+          <Route path='/' element={<Main />} />
+          <Route path='/mystock' element={<MyStock />} />
+        </Route>
       </Routes>
     </>
   );

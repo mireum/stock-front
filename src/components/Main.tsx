@@ -122,8 +122,7 @@ function Main(): React.ReactElement {
 
   return (
     <>     
-      <Header />
-      {/* 여기 주식정보 */}
+      {/* 주식정보 */}
       <StockHeader stock={stock[activeTab]} name={companyName[activeTab]} />
       
       <StockContainer>
