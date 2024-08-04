@@ -7,8 +7,7 @@ import styled from 'styled-components';
 import StockHeader from './StockHeader';
 
 const MainContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
+
 `;
 const StockContainer = styled.div`
   display: flex;
@@ -122,33 +121,30 @@ function Main(): React.ReactElement {
   };
 
   return (
-    <>
-      <MainContainer>
-        <Header />
-        {/* 여기 주식정보 */}
-        <StockHeader stock={stock[activeTab]} name={companyName[activeTab]} />
-        
-        <StockContainer>
-          <div>
-            <ul className='chartUl'>
-              {companyName.map((name, index) => (
-                <li className='chartLi cursor-pointer' key={index} onClick={() => handleTabClick(index)} style={{
-                  fontWeight: activeTab === index ? 'bold' : 'normal',
-                  backgroundColor: activeTab === index ? '#33F5FF' : '#fff'
-                }}>
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            {stock.length > 0 && activeTab !== null && (
-              <ChartBar stock={stock[activeTab]} />
-            )}
-          </div>
-        </StockContainer>
-
-      </MainContainer>
+    <>     
+      <Header />
+      {/* 여기 주식정보 */}
+      <StockHeader stock={stock[activeTab]} name={companyName[activeTab]} />
+      
+      <StockContainer>
+        <div>
+          <ul className='chartUl'>
+            {companyName.map((name, index) => (
+              <li className='chartLi cursor-pointer' key={index} onClick={() => handleTabClick(index)} style={{
+                fontWeight: activeTab === index ? 'bold' : 'normal',
+                backgroundColor: activeTab === index ? '#33F5FF' : '#fff'
+              }}>
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          {stock.length > 0 && activeTab !== null && (
+            <ChartBar stock={stock[activeTab]} />
+          )}
+        </div>
+      </StockContainer>     
     </>
   );
 }

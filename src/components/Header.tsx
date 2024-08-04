@@ -29,14 +29,14 @@ const HeaderContainer = styled.div`
     }
 
     .profileBox {
-      width: 230px;
+      width: 300px;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
       padding: 10px 6px;
 
-      .logoutButton {
+      .logButton {
         border-radius: 5px;
         border: 1px solid #aaa;
       }
@@ -100,7 +100,7 @@ function Header(): React.ReactElement {
 
   return (
     <HeaderContainer>
-      <div className='title cursor-pointer' onClick={() => {navigate('/')}}>
+      <div className='title cursor-pointer' onClick={() => navigate('/')}>
         <Link style={{ verticalAlign: 'middle', textDecoration: "none"}} to='/'>주식쿨</Link>
       </div>
       <div className='loginBox'>
@@ -113,7 +113,8 @@ function Header(): React.ReactElement {
         : <div className='profileBox'>
             <img src={kakaoUser.thumbnail_image} alt="카카오톡 썸네일" width="50" height="50" />
             <div>{kakaoUser.nickname} 님</div>
-            <button className='logoutButton cursor-pointer' onClick={handleLogout}>
+            <button className='logButton cursor-pointer' onClick={() => navigate('/mystock')}>내 주식</button>
+            <button className='logButton cursor-pointer' onClick={handleLogout}>
               로그아웃
             </button>
           </div>

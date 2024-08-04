@@ -4,6 +4,7 @@ import Main from './components/Main';
 import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import MyStock from './components/MyStock';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -11,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     box-sizing:  border-box;
     margin: 0 auto;
+    max-width: 1200px;
   }
 
   * {
@@ -36,6 +38,7 @@ const App:React.FC = () => {
       <GlobalStyle />
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/mystock' element={<MyStock />} />
       </Routes>
     </>
   );
