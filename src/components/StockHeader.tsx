@@ -93,7 +93,14 @@ const StockHeader = ({ stock, name }: PropsData) => {
           form,
           kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
         }, {withCredentials: true});
-        console.log('서브밋', res);
+        console.log('resrse',res);
+        
+        if (res.data.flag) { 
+          window.confirm('매수되었습니다!'); 
+          setOpenTradeModal(false);
+          window.location.reload();
+        }
+        else { alert('구매 실패!'); setOpenTradeModal(false); }
         
       } catch (err) {
         console.error(err);
@@ -108,7 +115,8 @@ const StockHeader = ({ stock, name }: PropsData) => {
   const color = !data ? undefined : (data?.prdy_ctrt.includes('-') ? 'red-text' : 'blue-text');
 
   const onClickToggleModal = useCallback(() => {
-    setOpenTradeModal(!openTradeModal);
+    if (!localStorage.getItem('KakaoUser')) { alert('로그인 후 매수할 수 있습니다!'); }
+    else { setOpenTradeModal(!openTradeModal); }
   }, [openTradeModal]);
 
   const nowPrice = (Number(data?.stck_hgpr) + Number(data?.stck_lwpr)) / 2
