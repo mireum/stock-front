@@ -73,7 +73,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
     const {name, value} = e.target;
     setForm((prev) => ({
       ...prev,
-     [name]: value,
+     [name]: Number(value),
      stockNumber: Number((Number(e.target.value) / nowPrice).toFixed(3))
     }))
   };
