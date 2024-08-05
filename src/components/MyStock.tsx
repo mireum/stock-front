@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const MyStockContainer = styled.div`
@@ -5,11 +7,57 @@ const MyStockContainer = styled.div`
 
 `;
 const StockBox = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
+  h1 {
+    width: 300px;
+    font-weight: bold;
+    font-size: 26px;
+    padding: 30px;
+    text-align: center;
+    align-self: flex-start;
+  }
+  table {
+    text-align: center;
+
+  }
+  th {
+    width: 300px;
+    height: 80px;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+  td {
+    height: 50px;
+    vertical-align: middle;
+
+  }
 `;
 
 
 const MyStock = (): React.ReactElement => {
+  const [myStock, setMyStock] = useState();
+
+  useEffect( () => {
+    try {
+      const getMyStock = async () => {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/mypage/myStock`, {
+          kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
+        }, {withCredentials:true}); 
+        const data = res.data;
+        console.log(data);
+        setMyStock(data);
+      }
+      getMyStock();
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   return (
     <MyStockContainer>
       <StockBox>
@@ -31,10 +79,12 @@ const MyStock = (): React.ReactElement => {
             </tr>
           </tbody>
         </table>
-        <ul>
-          <li></li>
-          <li></li>
-        </ul>
+        {!myStock 
+        ? <div>로딩중입니다..</div>
+        : 
+        JSON.stringify(myStock)
+        // myStock
+        }
       </StockBox>
       
     </MyStockContainer>
