@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ChartBar from './ChartBar';
-import Header from './Header';
 import { TokenResponse, StockResponse } from '../model/Model';
 import styled from 'styled-components';
 import StockHeader from './StockHeader';
 
-const MainContainer = styled.div`
-
-`;
 const StockContainer = styled.div`
   display: flex;
   border: 1px solid #8a84da;
