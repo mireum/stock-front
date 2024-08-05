@@ -73,11 +73,6 @@ const MyStock = (): React.ReactElement => {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-              <td>삼성전자</td>
-              <td>200000원</td>
-              <td>-1.5%</td>
-            </tr> */}
             {!myStock
             ? <td colSpan={3}>구매한 주식이 없습니다</td>
             :
@@ -93,12 +88,6 @@ const MyStock = (): React.ReactElement => {
             }
           </tbody>
         </table>
-        {/* {!myStock 
-        ? <div>로딩중입니다..</div>
-        : 
-        JSON.stringify(myStock)
-        // myStock
-        } */}
       </StockBox>
       
     </MyStockContainer>
