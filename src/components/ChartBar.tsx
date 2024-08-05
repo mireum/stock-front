@@ -4,13 +4,19 @@ import { OutputArr, PropsStockData } from '../model/Model';
 
 const CustomTooltip = ({ active, payload }:TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
+    const stckOprc = Number(payload[0].payload.stck_oprc).toLocaleString();
+    const stckHgpr = Number(payload[0].payload.stck_hgpr).toLocaleString();
+    const stckLwpr = Number(payload[0].payload.stck_lwpr).toLocaleString();
+    const stckClpr = Number(payload[0].payload.stck_clpr).toLocaleString();
+    const acmlVol = Number(payload[0].payload.acml_vol).toLocaleString();
+
     return (
-      <div className="custom-tooltip" style={{backgroundColor: '#fff', opacity: '0.8', padding: '10px', lineHeight: '1.2em'} }>
-        <p className="tooltip">{`시가:  ${payload[0].payload.stck_oprc}원`}</p>
-        <p className="tooltip">{`고가:  ${payload[0].payload.stck_hgpr}원`}</p>
-        <p className="tooltip">{`저가:  ${payload[0].payload.stck_lwpr}원`}</p>
-        <p className="tooltip">{`종가:  ${payload[0].payload.stck_clpr}원`}</p>
-        <p className="tooltip">{`거래량:  ${payload[0].payload.acml_vol}주`}</p>
+      <div className="custom-tooltip" style={{ backgroundColor: '#fff', opacity: '0.8', padding: '10px', lineHeight: '1.2em' }}>
+        <p className="tooltip">{`시가:  ${stckOprc}원`}</p>
+        <p className="tooltip">{`고가:  ${stckHgpr}원`}</p>
+        <p className="tooltip">{`저가:  ${stckLwpr}원`}</p>
+        <p className="tooltip">{`종가:  ${stckClpr}원`}</p>
+        <p className="tooltip">{`거래량:  ${acmlVol}주`}</p>
       </div>
     );
   }

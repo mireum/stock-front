@@ -44,3 +44,9 @@ export type PropsStockData = {
 }
 
 export const n = (n:number) => n.toLocaleString('KO-kr');
+
+export interface MyStockResponse {
+  stockname: string,
+  price: number,
+  stockNumber: number
+}

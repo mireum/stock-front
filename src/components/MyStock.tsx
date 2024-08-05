@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { MyStockResponse } from "../model/Model";
 
 const MyStockContainer = styled.div`
   background-color: aliceblue;
@@ -34,13 +35,12 @@ const StockBox = styled.div`
   td {
     height: 50px;
     vertical-align: middle;
-
   }
 `;
 
 
 const MyStock = (): React.ReactElement => {
-  const [myStock, setMyStock] = useState();
+  const [myStock, setMyStock] = useState<MyStockResponse[] | null>();
 
   useEffect( () => {
     try {
@@ -48,9 +48,11 @@ const MyStock = (): React.ReactElement => {
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/mypage/myStock`, {
           kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
         }, {withCredentials:true}); 
-        const data = res.data;
-        console.log(data);
-        setMyStock(data);
+        if (res.data.flag) {
+          setMyStock(res.data.data);
+        } else {
+          setMyStock(null);
+        }
       }
       getMyStock();
     } catch (err) {
@@ -62,7 +64,6 @@ const MyStock = (): React.ReactElement => {
     <MyStockContainer>
       <StockBox>
         <h1>보유 주식</h1>
-        {/* 주식이름 내가산금액-퍼센트 퍼센트 */}
         <table>
           <thead>
             <tr>
@@ -72,19 +73,32 @@ const MyStock = (): React.ReactElement => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <td>삼성전자</td>
               <td>200000원</td>
               <td>-1.5%</td>
-            </tr>
+            </tr> */}
+            {!myStock
+            ? <td colSpan={3}>구매한 주식이 없습니다</td>
+            :
+            myStock.map((item, index) => {
+              return (
+                <tr>
+                  <td>{item.stockname}</td>
+                  <td>{item.price}</td>
+                  <td>{item.stockNumber}</td>
+                </tr>
+              )
+            })
+            }
           </tbody>
         </table>
-        {!myStock 
+        {/* {!myStock 
         ? <div>로딩중입니다..</div>
         : 
         JSON.stringify(myStock)
         // myStock
-        }
+        } */}
       </StockBox>
       
     </MyStockContainer>

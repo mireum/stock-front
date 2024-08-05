@@ -49,17 +49,17 @@ const StockHeader = ({ stock, name }: PropsData) => {
   const [activeModalTab, setActiveModalTab] = useState<number>(0);
   const [countBuy, setCountBuy] = useState<number>(1);
   const [form, setForm] = useState({
-    Stockname: name,
+    stockname: name,
     price: 0,
     stockNumber: 0,
   });
-  const {Stockname, price} = form;
+  const {stockname, price} = form;
 
   useEffect(() => {
     if (openTradeModal) {
       setForm((prevForm) => ({
         ...prevForm,
-        Stockname: name,
+        stockname: name,
       }));
     }
   }, [openTradeModal, name]);
@@ -83,7 +83,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
     if (price < nowPrice && activeModalTab === 0) alert('현재 가격 미만으로는 구매하실 수 없습니다!');
     else {
       setForm({
-        Stockname: '',
+        stockname: '',
         price: 0,
         stockNumber: 0,
       });
@@ -141,7 +141,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
             <div className="info1">현재 가격: {nowPrice} </div>
             <div className="info1">현재 시장가: {data?.stck_hgpr} </div>
             <form onSubmit={handleSubmit} noValidate>
-              <input type="text" name="stockname" value={Stockname} onChange={onChange} hidden />
+              <input type="text" name="stockname" value={stockname} onChange={onChange} hidden />
               {/* 지정가 */}
               <input hidden={activeModalTab !== 0} min={nowPrice} type="number" name="price" value={price} onChange={onChange} />
               <p className="desc" hidden={activeModalTab !== 0}>모의주식이므로 현재 가격 미만에선 구매할 수 없습니다.</p>
