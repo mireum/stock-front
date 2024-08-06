@@ -54,11 +54,9 @@ const MyStock = (): React.ReactElement => {
               acc[curr.stockname] = { ...curr };
             }
             return acc;
-          }, {});
-          console.log(mergedStock);
-          
+          }, {});    
+              
           setMyStock(Object.values(mergedStock));
-          // setMyStock(res.data.data);
         } else {
           setMyStock(null);
         }
