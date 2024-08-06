@@ -5,7 +5,6 @@ import { MyStockResponse } from "../model/Model";
 
 const MyStockContainer = styled.div`
   background-color: aliceblue;
-
 `;
 const StockBox = styled.div`
   margin-top: 50px;
@@ -22,10 +21,7 @@ const StockBox = styled.div`
     text-align: center;
     align-self: flex-start;
   }
-  table {
-    text-align: center;
-
-  }
+  table { text-align: center; }
   th {
     width: 300px;
     height: 80px;
@@ -49,7 +45,20 @@ const MyStock = (): React.ReactElement => {
           kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id
         }, {withCredentials:true}); 
         if (res.data.flag) {
-          setMyStock(res.data.data);
+          const stockData = res.data.data;
+          const mergedStock = stockData.reduce((acc: Record<string, MyStockResponse>, curr: MyStockResponse) => {
+            if (acc[curr.stockname]) {
+              acc[curr.stockname].price += curr.price;
+              acc[curr.stockname].stockNumber += curr.stockNumber;
+            } else {
+              acc[curr.stockname] = { ...curr };
+            }
+            return acc;
+          }, {});
+          console.log(mergedStock);
+          
+          setMyStock(Object.values(mergedStock));
+          // setMyStock(res.data.data);
         } else {
           setMyStock(null);
         }
@@ -74,11 +83,11 @@ const MyStock = (): React.ReactElement => {
           </thead>
           <tbody>
             {!myStock
-            ? <td colSpan={3}>구매한 주식이 없습니다</td>
+            ? <tr><td colSpan={3}>구매한 주식이 없습니다</td></tr>
             :
             myStock.map((item, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{item.stockname}</td>
                   <td>{item.price}</td>
                   <td>{item.stockNumber}</td>
