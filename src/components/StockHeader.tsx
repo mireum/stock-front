@@ -66,7 +66,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
 
   const handleBuyPrice = () => {
     setCountBuy(countBuy + 1);
-    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1), stockNumber: countBuy});
+    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1), stockNumber: countBuy+1});
   };
 
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {    

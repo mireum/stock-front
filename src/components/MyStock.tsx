@@ -107,8 +107,11 @@ const MyStock = (): React.ReactElement => {
                     stockname: item.stockname
                   }, {withCredentials: true});
                   console.log(res);
-                  
-            
+                  if (res.data.flag) {
+                    setMyStock(myStock.filter(stock => stock.stockname !== item.stockname))               
+                  } else {
+                    alert('매매에 실패했습니다!');
+                  }
                 } catch (error) {
                   console.error(error);
                 }
@@ -120,7 +123,7 @@ const MyStock = (): React.ReactElement => {
                   <td>{Number(presentPrice.toFixed(2)).toLocaleString()}({profitOr > 0 ? `+${Number(profitOr.toFixed(2)).toLocaleString()}` : `${Number(profitOr.toFixed(2)).toLocaleString()}`}) ₩</td>
                   <td>{item.stockNumber}개</td>
                   <td>{profitMargin.toFixed(2)}%</td>
-                  <td><button onClick={handleSellBtn}>매매하기</button></td>
+                  <td><button className="cursor-pointer" onClick={handleSellBtn}>매매하기</button></td>
                 </tr>
               )
             })}
