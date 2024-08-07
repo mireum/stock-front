@@ -51,7 +51,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
   const [form, setForm] = useState({
     stockname: name,
     price: 0,
-    stockNumber: 0,
+    stockNumber: 1,
   });
   const {stockname, price} = form;
 
@@ -66,7 +66,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
 
   const handleBuyPrice = () => {
     setCountBuy(countBuy + 1);
-    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1), stockNumber: countBuy+1});
+    setForm({...form, price: Number(data?.stck_hgpr) * (countBuy+1), stockNumber: countBuy});
   };
 
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {    
@@ -85,7 +85,7 @@ const StockHeader = ({ stock, name }: PropsData) => {
       setForm({
         stockname: '',
         price: 0,
-        stockNumber: 0,
+        stockNumber: 1,
       });
       // 서버로 전송
       try {

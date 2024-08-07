@@ -3,6 +3,6 @@ import rateSlice from '../feature/rateSlice';
 
 export const store = configureStore({
     reducer: {
-        ctrt: rateSlice,
+        price: rateSlice,
     }
 })

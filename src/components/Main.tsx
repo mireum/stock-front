@@ -5,7 +5,7 @@ import { TokenResponse, StockResponse } from '../model/Model';
 import styled from 'styled-components';
 import StockHeader from './StockHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCtrt } from '../feature/rateSlice';
+import { setPrice } from '../feature/rateSlice';
 
 const StockContainer = styled.div`
   display: flex;
@@ -104,8 +104,8 @@ function Main(): React.ReactElement {
           setStock(allStockData);
           
           // redux에 비율 저장
-          const ctrtArr = allStockData.map(item => item.output[29].prdy_ctrt);
-          dispatch(setCtrt(ctrtArr))
+          const ctrtArr = allStockData.map(item => (Number(item.output[29].stck_hgpr) + Number(item.output[29].stck_lwpr)) / 2);
+          dispatch(setPrice(ctrtArr))
           
         } catch (error) {
           console.log(error);

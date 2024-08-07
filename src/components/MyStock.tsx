@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MyStockResponse } from "../model/Model";
 import { useSelector } from "react-redux";
-import { selectCtrt } from "../feature/rateSlice";
+import { selectPrice } from "../feature/rateSlice";
 
 const MyStockContainer = styled.div`
   background-color: aliceblue;
@@ -25,7 +25,7 @@ const StockBox = styled.div`
   }
   table { text-align: center; }
   th {
-    width: 300px;
+    width: 240px;
     height: 80px;
     font-weight: bold;
     vertical-align: middle;
@@ -40,8 +40,10 @@ const StockBox = styled.div`
 const MyStock = (): React.ReactElement => {
   const [myStock, setMyStock] = useState<MyStockResponse[] | null>();
 
-  const getCtrt = useSelector(selectCtrt);
-  const crtrArr = getCtrt.ctrt;
+  const getPrice = useSelector(selectPrice);
+  console.log(getPrice);
+  
+  const priceArr = getPrice.price;
   
   useEffect( () => {
     try {
@@ -82,7 +84,8 @@ const MyStock = (): React.ReactElement => {
             <tr>
               <th>주식 이름</th>
               <th>가격</th>
-              <th>전일 대비</th>
+              <th>주식</th>
+              <th>손익률</th>
             </tr>
           </thead>
           <tbody>
@@ -91,11 +94,19 @@ const MyStock = (): React.ReactElement => {
             :
             myStock.map((item, index) => {
               const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
+              const findIndex = companyName.indexOf(item.stockname);
+              
+              const purchasePrice = item.price / item.stockNumber;  // 내 1주당 구매가격
+              const currentPrice = Number(priceArr[findIndex]); // 현재 1주당 시가
+              const profitMargin = ((currentPrice-purchasePrice)/currentPrice)*100; // 손익률
+              const presentPrice = currentPrice * item.stockNumber; // 현재 자산
+              const profitOr = (presentPrice - purchasePrice)/100; // 현재 자산-구매가격
               return (
                 <tr key={index}>
                   <td>{item.stockname}</td>
-                  <td>{item.price}</td>
-                  <td>{crtrArr[companyName.indexOf(item.stockname)]}</td>
+                  <td>{presentPrice.toFixed(2)}({profitOr > 0 ? `+${profitOr.toFixed(2)}` : `${profitOr.toFixed(2)}`}) WON</td>
+                  <td>{item.stockNumber}개</td>
+                  <td>{profitMargin.toFixed(2)}%</td>
                 </tr>
               )
             })
