@@ -5,7 +5,7 @@ import { TokenResponse, StockResponse } from '../model/Model';
 import styled from 'styled-components';
 import StockHeader from './StockHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCtrt, setCtrt } from '../feature/rateSlice';
+import { setCtrt } from '../feature/rateSlice';
 
 const StockContainer = styled.div`
   display: flex;
@@ -47,7 +47,6 @@ function Main(): React.ReactElement {
   // 현재 활성화된 탭을 관리하는 상태
   const [activeTab, setActiveTab] = useState<number>(0);
   const dispatch = useDispatch();
-  const getCtrt = useSelector(selectCtrt);
 
   useEffect(() => {
     // 한국투자 토큰은 1분당 1회 발급됨, 하나 당 최대 24시간
@@ -107,7 +106,6 @@ function Main(): React.ReactElement {
           // redux에 비율 저장
           const ctrtArr = allStockData.map(item => item.output[29].prdy_ctrt);
           dispatch(setCtrt(ctrtArr))
-          console.log('getCtrt', getCtrt);
           
         } catch (error) {
           console.log(error);

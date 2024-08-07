@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MyStockResponse } from "../model/Model";
+import { useSelector } from "react-redux";
+import { selectCtrt } from "../feature/rateSlice";
 
 const MyStockContainer = styled.div`
   background-color: aliceblue;
@@ -38,6 +40,9 @@ const StockBox = styled.div`
 const MyStock = (): React.ReactElement => {
   const [myStock, setMyStock] = useState<MyStockResponse[] | null>();
 
+  const getCtrt = useSelector(selectCtrt);
+  const crtrArr = getCtrt.ctrt;
+  
   useEffect( () => {
     try {
       const getMyStock = async () => {
@@ -66,6 +71,7 @@ const MyStock = (): React.ReactElement => {
       console.error(err);
     }
   }, []);
+  // const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
 
   return (
     <MyStockContainer>
@@ -84,11 +90,12 @@ const MyStock = (): React.ReactElement => {
             ? <tr><td colSpan={3}>구매한 주식이 없습니다</td></tr>
             :
             myStock.map((item, index) => {
+              const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
               return (
                 <tr key={index}>
                   <td>{item.stockname}</td>
                   <td>{item.price}</td>
-                  <td>{item.stockNumber}</td>
+                  <td>{crtrArr[companyName.indexOf(item.stockname)]}</td>
                 </tr>
               )
             })
