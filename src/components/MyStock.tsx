@@ -41,8 +41,6 @@ const MyStock = (): React.ReactElement => {
   const [myStock, setMyStock] = useState<MyStockResponse[] | null>();
 
   const getPrice = useSelector(selectPrice);
-  console.log(getPrice);
-  
   const priceArr = getPrice.price;
   
   useEffect( () => {
@@ -73,7 +71,6 @@ const MyStock = (): React.ReactElement => {
       console.error(err);
     }
   }, []);
-  // const companyName = ['삼성전자', '엘지전자', '네이버', 'SK하이닉스', '카카오'];
 
   return (
     <MyStockContainer>
@@ -86,6 +83,7 @@ const MyStock = (): React.ReactElement => {
               <th>가격</th>
               <th>주식</th>
               <th>손익률</th>
+              <th>매매</th>
             </tr>
           </thead>
           <tbody>
@@ -101,16 +99,31 @@ const MyStock = (): React.ReactElement => {
               const profitMargin = ((currentPrice-purchasePrice)/currentPrice)*100; // 손익률
               const presentPrice = currentPrice * item.stockNumber; // 현재 자산
               const profitOr = (presentPrice - purchasePrice)/100; // 현재 자산-구매가격
+
+              const handleSellBtn = async () => {
+                try {
+                  const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/mypage/deleteStock`,{
+                    kakaoId: JSON.parse(`${localStorage.getItem('KakaoUser')}`).id,
+                    stockname: item.stockname
+                  }, {withCredentials: true});
+                  console.log(res);
+                  
+            
+                } catch (error) {
+                  console.error(error);
+                }
+              };
+
               return (
                 <tr key={index}>
                   <td>{item.stockname}</td>
-                  <td>{presentPrice.toFixed(2)}({profitOr > 0 ? `+${profitOr.toFixed(2)}` : `${profitOr.toFixed(2)}`}) WON</td>
+                  <td>{Number(presentPrice.toFixed(2)).toLocaleString()}({profitOr > 0 ? `+${Number(profitOr.toFixed(2)).toLocaleString()}` : `${Number(profitOr.toFixed(2)).toLocaleString()}`}) ₩</td>
                   <td>{item.stockNumber}개</td>
                   <td>{profitMargin.toFixed(2)}%</td>
+                  <td><button onClick={handleSellBtn}>매매하기</button></td>
                 </tr>
               )
-            })
-            }
+            })}
           </tbody>
         </table>
       </StockBox>
